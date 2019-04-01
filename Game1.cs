@@ -1,6 +1,10 @@
+using Frogger.Helpers;
+using Frogger.Display;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
+using System;
 
 namespace Frogger
 {
@@ -9,18 +13,36 @@ namespace Frogger
     /// </summary>
     public class Game1 : Game
     {
+
+        GameScreen m_GameScreen;
+        Screen m_CurrentScreen;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        RenderTarget2D renderTarget;
+        Rectangle dst;
+        public Rectangle screenRectangle;
+
+        public static float scaleX;
+        public static float scaleY;
+        public static Matrix scaleMatrix;
+        public static Viewport viewport;
+        public static int WIDTH = 728, HEIGHT = 1294;
+
+        public KeyboardState previousState;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = WIDTH;
+            graphics.PreferredBackBufferHeight = HEIGHT;
+            graphics.SupportedOrientations = DisplayOrientation.Portrait;
+            graphics.ApplyChanges();
 
-            graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 480;
-            graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+            screenRectangle = new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         }
 
         /// <summary>
@@ -32,6 +54,18 @@ namespace Frogger
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            PresentationParameters presentationParam = graphics.GraphicsDevice.PresentationParameters;
+
+            renderTarget = new RenderTarget2D(graphics.GraphicsDevice, WIDTH, HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, presentationParam.MultiSampleCount, RenderTargetUsage.DiscardContents); // RenderTargetUsage.PreserveContents
+            dst = calculateAspectRectangle();
+
+            scaleX = (float)GraphicsDevice.Viewport.Width / WIDTH;
+            scaleY = (float)GraphicsDevice.Viewport.Height / HEIGHT;
+            scaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
+
+            viewport = GraphicsDevice.Viewport;
+
+            TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
 
             base.Initialize();
         }
@@ -46,6 +80,10 @@ namespace Frogger
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            textureManager = new TextureManager(this.Content);
+            m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
+            m_CurrentScreen = m_GameScreen;
+
         }
 
         /// <summary>
@@ -64,8 +102,7 @@ namespace Frogger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                Exit();
+            m_CurrentScreen.Update(gameTime);
 
             // TODO: Add your update logic here
 
@@ -78,11 +115,67 @@ namespace Frogger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.SetRenderTarget(renderTarget);
+            GraphicsDevice.Clear(new Color(0, 0, 0));
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            m_CurrentScreen.Draw(spriteBatch);
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(new Color(110, 156, 66));
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, dst, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                renderTarget.Dispose();
+                renderTarget = null;
+            }
+            base.Dispose(disposing);
+        }
+
+        public void GameScreenEvent(object obj, EventArgs e)
+        {
+
+
+        }
+
+        protected Rectangle calculateAspectRectangle()
+        {
+            Rectangle dst = new Rectangle();
+
+            float outputAspect = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
+            float preferredAspect = WIDTH / (float)HEIGHT;
+
+
+            if (outputAspect <= preferredAspect)
+            {
+                int presentHeight = (int)((Window.ClientBounds.Width / preferredAspect) + 0.5f);
+                int barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
+
+                dst = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
+            }
+            else
+            {
+                int presentWidth = (int)((Window.ClientBounds.Width * preferredAspect) + 0.5f);
+                int barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
+
+                dst = new Rectangle(barWidth, 0, presentWidth, Window.ClientBounds.Height);
+            }
+
+            return dst;
+        }
+
+
+
     }
 }
