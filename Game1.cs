@@ -13,6 +13,8 @@ namespace Frogger
     /// </summary>
     public class Game1 : Game
     {
+        public static TextureManager textureManager;
+        public static AudioManager audioManager;
 
         GameScreen m_GameScreen;
         Screen m_CurrentScreen;
