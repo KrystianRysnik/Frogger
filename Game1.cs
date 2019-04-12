@@ -34,6 +34,7 @@ namespace Frogger
 
         public KeyboardState previousState;
 
+        public static SpriteFont eightBitFont;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -83,6 +84,9 @@ namespace Frogger
 
             // TODO: use this.Content to load your game content here
             textureManager = new TextureManager(this.Content);
+
+            eightBitFont = Content.Load<SpriteFont>("Font/8bit");
+
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
             m_CurrentScreen = m_GameScreen;
 
@@ -126,7 +130,7 @@ namespace Frogger
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(new Color(110, 156, 66));
+            GraphicsDevice.Clear(new Color(0, 0, 0));
 
             spriteBatch.Begin();
             spriteBatch.Draw(renderTarget, dst, Color.White);

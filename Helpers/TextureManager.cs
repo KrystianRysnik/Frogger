@@ -30,10 +30,12 @@ namespace Frogger.Helpers
         public Texture2D wall;
 
         // Water
-        public Texture2D water;
         public Texture2D turtle;
         public Texture2D log;
-        
+        public Texture2D logLong;
+        public Texture2D logLonger;
+
+
         public TextureManager(ContentManager theContent)
         {
             loadTextures(theContent);
@@ -52,8 +54,8 @@ namespace Frogger.Helpers
             wall = theContent.Load<Texture2D>("Texture/wall");
             turtle = theContent.Load<Texture2D>("Texture/turtle");
             log = theContent.Load<Texture2D>("Texture/log");
-
-           
+            logLong = theContent.Load<Texture2D>("Texture/logLong");
+            logLonger = theContent.Load<Texture2D>("Texture/logLonger");
         }
     }
 }
