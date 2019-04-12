@@ -34,7 +34,9 @@ namespace Frogger
 
         public KeyboardState previousState;
 
+        public static Texture2D waterBackground;
         public static SpriteFont eightBitFont;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -69,7 +71,7 @@ namespace Frogger
             viewport = GraphicsDevice.Viewport;
 
             TouchPanel.EnabledGestures = GestureType.HorizontalDrag | GestureType.DragComplete | GestureType.VerticalDrag;
-
+            
             base.Initialize();
         }
 
@@ -84,6 +86,12 @@ namespace Frogger
 
             // TODO: use this.Content to load your game content here
             textureManager = new TextureManager(this.Content);
+
+            waterBackground = new Texture2D(graphics.GraphicsDevice, WIDTH, 8 * 52);
+            Color[] data = new Color[WIDTH * 8 * 52];
+            for (int i = 0; i < data.Length; ++i)
+                data[i] = new Color(0, 4, 76);
+            waterBackground.SetData(data);
 
             eightBitFont = Content.Load<SpriteFont>("Font/8bit");
 
@@ -126,6 +134,7 @@ namespace Frogger
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(waterBackground, new Vector2(0, 0), Color.White);
             m_CurrentScreen.Draw(spriteBatch);
             spriteBatch.End();
 
