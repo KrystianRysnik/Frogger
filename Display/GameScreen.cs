@@ -19,21 +19,16 @@ namespace Frogger.Display
 {
     class GameScreen : Screen
     {
+        HUD hud;
         Frog player;
         List<Wall> walls = new List<Wall>();
         List<Car> cars = new List<Car>();
         List<Turtle[]> groupOfTurtles = new List<Turtle[]>();
         List<Log> logs = new List<Log>();
-
-        string hiScore = "00000";
-        string firstUp = "00000";
-        long score = 0;
-        int time = 60;
-
-        double elapsedTime, timeToUpdate = 1000;
-
+        
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+            hud = new HUD();
             player = new Frog("green", new Vector2(8 * (Game1.textureManager.frogGreen.Width/6), 14 * 52));
 
             for (int x = 0; x < 14; x++)
@@ -88,20 +83,13 @@ namespace Frogger.Display
                 return;
             }
 
+            hud.Update(theTime);
+
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                score += 1000;
-                UpdateScore();          
-            }
-
-            elapsedTime += theTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (elapsedTime > timeToUpdate)
-            {
-                elapsedTime -= timeToUpdate;
-
-                time -= 1;
-            }
+                hud.Score += 1000;
+                hud.UpdateScore();          
+            }         
 
             player.Update(theTime);
 
@@ -171,11 +159,7 @@ namespace Frogger.Display
             }
             player.Draw(theBatch);
 
-            theBatch.DrawString(Game1.eightBitFont, "1-UP", new Vector2((Game1.WIDTH / 4) - (2.5f * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, firstUp, new Vector2((Game1.WIDTH / 4) - (3.5f * 28), 40), Color.Red);
-            theBatch.DrawString(Game1.eightBitFont, "HI-SCORE", new Vector2((Game1.WIDTH / 2) - (4 * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, hiScore, new Vector2((Game1.WIDTH / 2) - (2.5f * 28), 40), Color.Red);
-            theBatch.DrawString(Game1.eightBitFont, "TIME", new Vector2(Game1.WIDTH - (4 * 28), 15.5f * 52), Color.Yellow);
+            hud.Draw(theBatch);
 
             base.Draw(theBatch);
         }
@@ -185,24 +169,6 @@ namespace Frogger.Display
             isGameOver = false;
             player.RestartLocation();
         }
-
-        private void UpdateScore()
-        {
-            firstUp = "00000";
-            firstUp += score.ToString();
-            firstUp = firstUp.Substring(firstUp.Length - 5);
-
-            if (Int64.Parse(hiScore) < score)
-            {
-                hiScore = "00000" + score.ToString();
-                hiScore = hiScore.Substring(hiScore.Length - 5);
-                if (Int64.Parse(hiScore) > 99990)
-                {
-                    hiScore = "99990";
-                }
-            }            
-        }
-
 
         private void logsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
         {
