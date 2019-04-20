@@ -16,7 +16,7 @@ namespace Frogger.GameObjects
 {
     class Log
     {
-        Texture2D Texture { set; get; }
+        public Texture2D Texture { set; get; }
         public Rectangle Location { set; get; }
         public Vector2 Position { set; get; }
 

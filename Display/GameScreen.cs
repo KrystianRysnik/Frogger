@@ -22,7 +22,7 @@ namespace Frogger.Display
         Frog player;
         List<Wall> walls = new List<Wall>();
         List<Car> cars = new List<Car>();
-        List<Turtle> turtles = new List<Turtle>();
+        List<Turtle[]> groupOfTurtles = new List<Turtle[]>();
         List<Log> logs = new List<Log>();
 
         string hiScore = "00000";
@@ -104,6 +104,7 @@ namespace Frogger.Display
             }
 
             player.Update(theTime);
+
             foreach (Car car in cars)
             {
                 car.Update(theTime);
@@ -113,24 +114,39 @@ namespace Frogger.Display
                     //player.Update(theTime);
                 }
             }
-            foreach (Turtle turtle in turtles)
+            foreach (Turtle[] turtles in groupOfTurtles)
             {
-                turtle.Update(theTime);
-                if (turtle.Location.Intersects(player.Location))
+                foreach (Turtle turtle in turtles)
                 {
-                    player.IsStick = true;
-                    player.StickMove(turtle.Position);                  
+                    turtle.Update(theTime);
+                    if (turtle.Location.Intersects(player.Location))
+                    {
+                        player.isCollision = true;
+                    }
                 }
+                if (player.isCollision)
+                {
+                    if (turtles[0].Location.X < player.Location.X + 15 && turtles[0].Location.Y == player.Location.Y
+                        && player.Location.X - 15 < turtles[turtles.Length - 1].Location.X)
+                    {
+                        player.IsStick = true;
+                        player.StickMove(turtles[0].Position);
+                        player.isCollision = false;
+                    }
+                }            
             }
             foreach (Log log in logs)
             {
                 log.Update(theTime);
                 if (log.Location.Intersects(player.Location))
-                {
-                    player.IsStick = true;
-                    player.StickMove(log.Position);
+                { 
+                    if (player.ShouldIStickToThisObject(log))
+                    {
+                        player.IsStick = true;
+                        player.StickMove(log.Position);
+                    }
                 }
-            }
+            }                   
         }
         public override void Draw(SpriteBatch theBatch)
         {
@@ -142,9 +158,12 @@ namespace Frogger.Display
             {
                 car.Draw(theBatch);
             }
-            foreach (Turtle turtle in turtles)
+            foreach (Turtle[] turtles in groupOfTurtles)
             {
-                turtle.Draw(theBatch);
+                foreach (Turtle turtle in turtles)
+                {
+                    turtle.Draw(theBatch);
+                }
             }
             foreach (Log log in logs)
             {
@@ -164,6 +183,7 @@ namespace Frogger.Display
         {
             isGameStarted = true;
             isGameOver = false;
+            player.RestartLocation();
         }
 
         private void UpdateScore()
@@ -174,7 +194,8 @@ namespace Frogger.Display
 
             if (Int64.Parse(hiScore) < score)
             {
-                hiScore = score.ToString();
+                hiScore = "00000" + score.ToString();
+                hiScore = hiScore.Substring(hiScore.Length - 5);
                 if (Int64.Parse(hiScore) > 99990)
                 {
                     hiScore = "99990";
@@ -213,27 +234,34 @@ namespace Frogger.Display
 
         private void turtlesInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
         {
+            Turtle[] turtles = new Turtle[length];
             for (int i = 0; i < length; i++)
             {
-                turtles.Add(new Turtle("normal", new Vector2(startFrom, row * 52), restart));
+                turtles[i] = new Turtle("diver", new Vector2(startFrom, row * 52), restart);
                 startFrom += 52;
             }
+            groupOfTurtles.Add(turtles);
+            turtles = new Turtle[length];
             startFrom += spaceBetween;
             for (int i = 0; i < length; i++)
             {
-                turtles.Add(new Turtle("normal", new Vector2(startFrom, row * 52), restart));
+                turtles[i] = new Turtle("normal", new Vector2(startFrom, row * 52), restart);
                 startFrom += 52;
             }
+            groupOfTurtles.Add(turtles);
+            turtles = new Turtle[length];
             startFrom += spaceBetween;
             for (int i = 0; i < length; i++)
             {
-                turtles.Add(new Turtle("normal", new Vector2(startFrom, row * 52), restart));
+                turtles[i] = new Turtle("normal", new Vector2(startFrom, row * 52), restart);
                 startFrom += 52;
             }
+            groupOfTurtles.Add(turtles);
+            turtles = new Turtle[length];
             startFrom += spaceBetween;
             for (int i = 0; i < length; i++)
             {
-                turtles.Add(new Turtle("normal", new Vector2(startFrom, row * 52), restart));
+                turtles[i] = new Turtle("normal", new Vector2(startFrom, row * 52), restart);
                 startFrom += 52;
             }
         }    
