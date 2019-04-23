@@ -25,6 +25,9 @@ namespace Frogger.Display
         List<Car> cars = new List<Car>();
         List<Turtle[]> groupOfTurtles = new List<Turtle[]>();
         List<Log> logs = new List<Log>();
+
+        int Level { set; get; } // Show max 15
+        int Life { set; get; }
         
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
@@ -88,6 +91,7 @@ namespace Frogger.Display
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 hud.Score += 1000;
+                hud.Level++;
                 hud.UpdateScore();          
             }         
 
@@ -138,14 +142,10 @@ namespace Frogger.Display
         }
         public override void Draw(SpriteBatch theBatch)
         {
-            foreach(Wall wall in walls) 
-            {
-                wall.Draw(theBatch);
-            }
-            foreach (Car car in cars)
-            {
-                car.Draw(theBatch);
-            }
+            walls.ForEach(wall => wall.Draw(theBatch));
+            cars.ForEach(car => car.Draw(theBatch));
+            logs.ForEach(log => log.Draw(theBatch));
+
             foreach (Turtle[] turtles in groupOfTurtles)
             {
                 foreach (Turtle turtle in turtles)
@@ -153,16 +153,18 @@ namespace Frogger.Display
                     turtle.Draw(theBatch);
                 }
             }
-            foreach (Log log in logs)
-            {
-                log.Draw(theBatch);
-            }
-            player.Draw(theBatch);
 
+            for (int i = 0; i < 5; i++)
+            {
+                theBatch.Draw(Game1.textureManager.forest, new Vector2(i * Game1.textureManager.forest.Width, 52), Color.White);
+            }
+          
+            player.Draw(theBatch);
             hud.Draw(theBatch);
 
             base.Draw(theBatch);
         }
+
         public void StartGame()
         {
             isGameStarted = true;

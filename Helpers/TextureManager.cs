@@ -26,14 +26,19 @@ namespace Frogger.Helpers
             carFourth,
             carFifth;
 
-        // Wall
-        public Texture2D wall;
+        // Wall, forest
+        public Texture2D wall,
+            forest;
 
         // Water
         public Texture2D turtle;
         public Texture2D log;
         public Texture2D logLong;
         public Texture2D logLonger;
+
+        // HUD 
+        public Texture2D life;
+        public Texture2D level;
 
 
         public TextureManager(ContentManager theContent)
@@ -51,11 +56,15 @@ namespace Frogger.Helpers
             carFourth = theContent.Load<Texture2D>("Texture/car_4");
             carFifth = theContent.Load<Texture2D>("Texture/car_5");
 
+            forest = theContent.Load<Texture2D>("Texture/forest");
             wall = theContent.Load<Texture2D>("Texture/wall");
             turtle = theContent.Load<Texture2D>("Texture/turtle");
             log = theContent.Load<Texture2D>("Texture/log");
             logLong = theContent.Load<Texture2D>("Texture/logLong");
             logLonger = theContent.Load<Texture2D>("Texture/logLonger");
+
+            life = theContent.Load<Texture2D>("Texture/life");
+            level = theContent.Load<Texture2D>("Texture/level");
         }
     }
 }

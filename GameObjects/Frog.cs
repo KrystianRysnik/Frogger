@@ -35,6 +35,7 @@ namespace Frogger.GameObjects
         public bool isCollision { set; get; }
 
         float angle = 0f;
+        float elapsedTime, keyDelay = 0;
 
         public Frog(string name, Vector2 position)
         {
@@ -57,6 +58,7 @@ namespace Frogger.GameObjects
 
         public void Update(GameTime theTime)
         {
+            HandleTime(theTime);
             KeyboardControl();
             UpdateLocation();
         }
@@ -68,32 +70,45 @@ namespace Frogger.GameObjects
 
         }
 
+        private void HandleTime(GameTime theTime)
+        {
+            elapsedTime += (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            if (keyDelay > 0)
+            {
+                keyDelay -= (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            }
+        }
+
         private void KeyboardControl()
         {
             keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Up) & !previousState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Up) & !previousState.IsKeyDown(Keys.Up) && keyDelay <= 0)
             {
                 Position -= moveVertical;
                 angle = 0f;
+                keyDelay = 125;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down) && keyDelay <= 0)
             {
                 Position += moveVertical;
                 angle = (float)Math.PI;
+                keyDelay = 125;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Left) & !previousState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Left) & !previousState.IsKeyDown(Keys.Left) && keyDelay <= 0)
             {
                 Position -= moveHorizontal;
                 angle = (float)Math.PI * 1.5f;
+                keyDelay = 125;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Right) & !previousState.IsKeyDown(Keys.Right))
+            if (keyboardState.IsKeyDown(Keys.Right) & !previousState.IsKeyDown(Keys.Right) && keyDelay <= 0)
             {
                 Position += moveHorizontal;
                 angle = (float)Math.PI / 2;
+                keyDelay = 125;
             }
 
             previousState = Keyboard.GetState();
