@@ -16,9 +16,9 @@ namespace Frogger.GameObjects
 {
     class Meta
     {
-        Rectangle Location { set; get; }
+        public Rectangle Location { set; get; }
         Texture2D Texture { set; get; }
-        bool IsShow { set; get; }
+        public bool IsShow { set; get; }
 
         public Meta(Vector2 _position)
         {
@@ -34,8 +34,10 @@ namespace Frogger.GameObjects
 
         public void Draw(SpriteBatch theBatch)
         {
-            theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width / 2, Location.Y + Texture.Height / 2, Location.Width, Location.Height), new Rectangle(0, 0, Texture.Width / 2, Texture.Height), Color.White, 0f, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 1);
-
+            if (IsShow)
+            {
+                theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width / 2, Location.Y + Texture.Height / 2, Location.Width, Location.Height), new Rectangle(0, 0, Texture.Width / 2, Texture.Height), Color.White, 0f, new Vector2(Texture.Width / 2, Texture.Height / 2), SpriteEffects.None, 1);
+            }
         }
     }
 }

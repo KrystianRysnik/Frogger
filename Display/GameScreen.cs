@@ -29,6 +29,7 @@ namespace Frogger.Display
 
         int Level { set; get; } // Show max 15
         int Life { set; get; }
+        int MetaReach = 0;
         
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
@@ -144,8 +145,23 @@ namespace Frogger.Display
                         player.StickMove(log.Position);
                     }
                 }
-            }                   
+            }     
+            foreach (Meta m in meta)
+            {
+                if (m.Location.Intersects(player.Location) && !m.IsShow && player.Location.Y < 3 * 52)
+                {
+                    m.IsShow = true;
+                    MetaReach++;
+                    hud.Score += 200;
+                    player.RestartLocation();
+                }
+                if (MetaReach == 5)
+                {
+                    NewStage();
+                }
+            }
         }
+
         public override void Draw(SpriteBatch theBatch)
         {
             walls.ForEach(wall => wall.Draw(theBatch));
@@ -177,6 +193,17 @@ namespace Frogger.Display
             isGameStarted = true;
             isGameOver = false;
             player.RestartLocation();
+        }
+
+        private void NewStage()
+        {            
+            hud.Level++;
+            player.RestartLocation();
+            foreach (Meta m in meta)
+            {
+                m.IsShow = false;
+            }
+            MetaReach = 0;
         }
 
         private void logsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
