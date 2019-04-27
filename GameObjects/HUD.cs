@@ -21,7 +21,7 @@ namespace Frogger.GameObjects
         public long Score { set; get; }
         public long Level { set; get; }
         public long Life { set; get; }
-        float Time { set; get; }
+        public float Time { set; get; }
 
         double elapsedTime, timeToUpdate = 500;
 
@@ -41,6 +41,7 @@ namespace Frogger.GameObjects
             if (Time > 0.0f)
             {
                 UpdateTime(theTime);
+                UpdateScore();
             }
             else
             {

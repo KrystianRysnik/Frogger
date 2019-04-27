@@ -153,6 +153,7 @@ namespace Frogger.Display
                     m.IsShow = true;
                     MetaReach++;
                     hud.Score += 200;
+                    hud.Time = 60.0f;
                     player.RestartLocation();
                 }
                 if (MetaReach == 5)
