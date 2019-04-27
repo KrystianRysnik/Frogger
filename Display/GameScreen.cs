@@ -25,6 +25,7 @@ namespace Frogger.Display
         List<Car> cars = new List<Car>();
         List<Turtle[]> groupOfTurtles = new List<Turtle[]>();
         List<Log> logs = new List<Log>();
+        List<Meta> meta = new List<Meta>();
 
         int Level { set; get; } // Show max 15
         int Life { set; get; }
@@ -33,6 +34,11 @@ namespace Frogger.Display
         {
             hud = new HUD();
             player = new Frog("green", new Vector2(8 * (Game1.textureManager.frogGreen.Width/6), 14 * 52));
+
+            for (int i = 0; i < 5; i++)
+            {
+                meta.Add(new Meta(new Vector2(23 + (Game1.textureManager.meta.Width/2 * i + 98 * i), 52+49)));
+            }
 
             for (int x = 0; x < 14; x++)
             {
@@ -145,6 +151,7 @@ namespace Frogger.Display
             walls.ForEach(wall => wall.Draw(theBatch));
             cars.ForEach(car => car.Draw(theBatch));
             logs.ForEach(log => log.Draw(theBatch));
+            meta.ForEach(meta => meta.Draw(theBatch));
 
             foreach (Turtle[] turtles in groupOfTurtles)
             {

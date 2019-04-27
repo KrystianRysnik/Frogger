@@ -31,6 +31,7 @@ namespace Frogger.Helpers
             forest;
 
         // Water
+        public Texture2D meta;
         public Texture2D turtle;
         public Texture2D log;
         public Texture2D logLong;
@@ -56,6 +57,7 @@ namespace Frogger.Helpers
             carFourth = theContent.Load<Texture2D>("Texture/car_4");
             carFifth = theContent.Load<Texture2D>("Texture/car_5");
 
+            meta = theContent.Load<Texture2D>("Texture/meta");
             forest = theContent.Load<Texture2D>("Texture/forest");
             wall = theContent.Load<Texture2D>("Texture/wall");
             turtle = theContent.Load<Texture2D>("Texture/turtle");

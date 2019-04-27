@@ -66,6 +66,7 @@
     <Compile Include="GameObjects\Frog.cs" />
     <Compile Include="GameObjects\HUD.cs" />
     <Compile Include="GameObjects\Log.cs" />
+    <Compile Include="GameObjects\Meta.cs" />
     <Compile Include="GameObjects\Turtle.cs" />
     <Compile Include="GameObjects\Wall.cs" />
     <Compile Include="Helpers\AudioManager.cs" />
