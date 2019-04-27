@@ -63,7 +63,7 @@ namespace Frogger.GameObjects
             for (int i = 0; i < 15; i++)
             {
                 theBatch.Draw(Game1.textureManager.level, new Vector2(Game1.WIDTH - ((i + 1) * Game1.textureManager.life.Width + ((i + 1) * 3)), 15 * 52 + 3), Color.White);
-                if (i >= Level)
+                if (Level - 1 <= i)
                 {
                     break;
                 }
