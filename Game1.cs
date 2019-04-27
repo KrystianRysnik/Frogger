@@ -16,6 +16,7 @@ namespace Frogger
         public static TextureManager textureManager;
         public static AudioManager audioManager;
 
+        HomeScreen m_HomeScreen;
         GameScreen m_GameScreen;
         Screen m_CurrentScreen;
 
@@ -100,8 +101,9 @@ namespace Frogger
 
             eightBitFont = Content.Load<SpriteFont>("Font/8bit");
 
+            m_HomeScreen = new HomeScreen(this.Content, new EventHandler(HomeScreenEvent));
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
-            m_CurrentScreen = m_GameScreen;
+            m_CurrentScreen = m_HomeScreen;
 
         }
 
@@ -161,6 +163,11 @@ namespace Frogger
                 renderTarget = null;
             }
             base.Dispose(disposing);
+        }
+
+        public void HomeScreenEvent(object obj, EventArgs e)
+        {
+            m_CurrentScreen = m_GameScreen;
         }
 
         public void GameScreenEvent(object obj, EventArgs e)
