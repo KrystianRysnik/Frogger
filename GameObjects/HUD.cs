@@ -21,15 +21,15 @@ namespace Frogger.GameObjects
         public long Score { set; get; }
         public long Level { set; get; }
         public long Life { set; get; }
-        int Time { set; get; }
+        float Time { set; get; }
 
-        double elapsedTime, timeToUpdate = 1000;
+        double elapsedTime, timeToUpdate = 500;
 
         int Fill { set; get; }
 
         public HUD()
         {
-            Time = 60;
+            Time = 60.0f;
             Score = 0;
             Life = 4;
             Level = 1;
@@ -38,7 +38,7 @@ namespace Frogger.GameObjects
 
         public void Update(GameTime theTime)
         {
-            if (Time > 0)
+            if (Time > 0.0f)
             {
                 UpdateTime(theTime);
             }
@@ -52,9 +52,9 @@ namespace Frogger.GameObjects
         public void Draw(SpriteBatch theBatch)
         {
             theBatch.DrawString(Game1.eightBitFont, "1-UP", new Vector2((Game1.WIDTH / 4) - (2.5f * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, firstUp, new Vector2((Game1.WIDTH / 4) - (3.5f * 28), 40), Color.Red);
+            theBatch.DrawString(Game1.eightBitFont, firstUp, new Vector2((Game1.WIDTH / 4) - (3.5f * 28), 30), Color.Red);
             theBatch.DrawString(Game1.eightBitFont, "HI-SCORE", new Vector2((Game1.WIDTH / 2) - (4 * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, hiScore, new Vector2((Game1.WIDTH / 2) - (2.5f * 28), 40), Color.Red);
+            theBatch.DrawString(Game1.eightBitFont, hiScore, new Vector2((Game1.WIDTH / 2) - (2.5f * 28), 30), Color.Red);
             theBatch.DrawString(Game1.eightBitFont, "TIME", new Vector2(Game1.WIDTH - (4 * 28), 15.5f * 52), Color.Yellow);
             for (int i = 0; i < Life; i++)
             {
@@ -95,7 +95,7 @@ namespace Frogger.GameObjects
             if (elapsedTime > timeToUpdate)
             {
                 elapsedTime -= timeToUpdate;
-                Time -= 1;
+                Time -= 0.5f;
 
                 Fill = Game1.timeCounter.Width - (int)((float)Time / 60f * (float)Game1.timeCounter.Width);
                 
