@@ -12,6 +12,7 @@ using Android.Widget;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Frogger.GameObjects
 {
@@ -60,6 +61,7 @@ namespace Frogger.GameObjects
         {
             HandleTime(theTime);
             KeyboardControl();
+            TouchControl();
             UpdateLocation();
         }
 
@@ -87,7 +89,7 @@ namespace Frogger.GameObjects
             {
                 Position -= moveVertical;
                 angle = 0f;
-                keyDelay = 125;
+                keyDelay = 200;
             }
 
             if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down) && keyDelay <= 0)
@@ -112,6 +114,51 @@ namespace Frogger.GameObjects
             }
 
             previousState = Keyboard.GetState();
+        }
+
+        public void TouchControl()
+        {
+            var gesture = default(GestureSample);
+
+            while (TouchPanel.IsGestureAvailable)
+            {
+                gesture = TouchPanel.ReadGesture();
+
+                if (gesture.GestureType == GestureType.VerticalDrag && keyDelay <= 0)
+                {
+                    
+                    if (gesture.Delta.Y < 0)
+                    {
+                        Position -= moveVertical;
+                        angle = 0f;
+                    }
+                    if (gesture.Delta.Y > 0)
+                    {
+                        Position += moveVertical;
+                        angle = (float)Math.PI;                      
+                    }
+                    keyDelay = 250;
+                }
+
+                if (gesture.GestureType == GestureType.HorizontalDrag && keyDelay <= 0)
+                {
+
+                    if (gesture.Delta.X < 0)
+                    {
+
+                        Position -= moveHorizontal;
+                        angle = (float)Math.PI * 1.5f;
+
+                    }
+                    if (gesture.Delta.X > 0)
+                    {
+
+                        Position += moveHorizontal;
+                        angle = (float)Math.PI / 2;
+                    }
+                    keyDelay = 250;
+                } 
+            }
         }
 
         private void UpdateLocation()
