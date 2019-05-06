@@ -30,13 +30,16 @@ namespace Frogger.GameObjects
 
         Vector2 moveHorizontal;
         Vector2 moveVertical;
+        Vector2 moveVector;
 
+        public bool isMoving { set; get; }
         public bool IsHit { set; get; }
         public bool IsStick { set; get; }
         public bool isCollision { set; get; }
 
         float angle = 0f;
-        float elapsedTime, keyDelay = 0;
+        float elapsedTime, keyDelay = 0, moveDelat = 50;
+        int textureIdx = 2;
 
         public Frog(string name, Vector2 position)
         {
@@ -52,6 +55,7 @@ namespace Frogger.GameObjects
                 Texture.Height);
 
             Position = position;
+            moveVector = position;
 
             moveHorizontal = new Vector2(Texture.Width / 6, 0);
             moveVertical = new Vector2(0, Texture.Height);
@@ -62,12 +66,12 @@ namespace Frogger.GameObjects
             HandleTime(theTime);
             KeyboardControl();
             TouchControl();
-            UpdateLocation();
+            UpdateLocation(theTime);
         }
 
         public void Draw(SpriteBatch theBatch)
         {
-           theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width/12, Location.Y + Texture.Height/2, Location.Width, Location.Height), new Rectangle(0, 0, Texture.Width / 6, Texture.Height), Color.White, angle, new Vector2(Texture.Width / 12, Texture.Height / 2), SpriteEffects.None, 1);
+           theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width/12, Location.Y + Texture.Height/2, Location.Width, Location.Height), new Rectangle(Texture.Width / 6 * textureIdx, 0, Texture.Width / 6, Texture.Height), Color.White, angle, new Vector2(Texture.Width / 12, Texture.Height / 2), SpriteEffects.None, 1);
 
 
         }
@@ -79,6 +83,10 @@ namespace Frogger.GameObjects
             {
                 keyDelay -= (float)theTime.ElapsedGameTime.TotalMilliseconds;
             }
+            else
+            {
+                isMoving = false;
+            }
         }
 
         private void KeyboardControl()
@@ -87,30 +95,34 @@ namespace Frogger.GameObjects
 
             if (keyboardState.IsKeyDown(Keys.Up) & !previousState.IsKeyDown(Keys.Up) && keyDelay <= 0)
             {
-                Position -= moveVertical;
+                moveVector = -moveVertical;
                 angle = 0f;
-                keyDelay = 250;
+                keyDelay = 150;
+                isMoving = true;
             }
 
             if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down) && keyDelay <= 0)
             {
-                Position += moveVertical;
+                moveVector = moveVertical;
                 angle = (float)Math.PI;
-                keyDelay = 250;
+                keyDelay = 150;
+                isMoving = true;
             }
 
             if (keyboardState.IsKeyDown(Keys.Left) & !previousState.IsKeyDown(Keys.Left) && keyDelay <= 0)
             {
-                Position -= moveHorizontal;
+                moveVector = -moveHorizontal;
                 angle = (float)Math.PI * 1.5f;
-                keyDelay = 250;
+                keyDelay = 150;
+                isMoving = true;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) & !previousState.IsKeyDown(Keys.Right) && keyDelay <= 0)
             {
-                Position += moveHorizontal;
+                moveVector = moveHorizontal;
                 angle = (float)Math.PI / 2;
-                keyDelay = 250;
+                keyDelay = 150;
+                isMoving = true;
             }
 
             previousState = Keyboard.GetState();
@@ -129,15 +141,18 @@ namespace Frogger.GameObjects
                     
                     if (gesture.Delta.Y < 0)
                     {
-                        Position -= moveVertical;
+                        moveVector = Position - moveVertical;
+                        //Position -= moveVertical;
                         angle = 0f;
                     }
                     if (gesture.Delta.Y > 0)
                     {
-                        Position += moveVertical;
+                        moveVector = Position + moveVertical;
+                        //Position += moveVertical;
                         angle = (float)Math.PI;                      
                     }
-                    keyDelay = 250;
+                    keyDelay = 150;
+                    isMoving = true;
                 }
 
                 if (gesture.GestureType == GestureType.HorizontalDrag && keyDelay <= 0)
@@ -145,38 +160,63 @@ namespace Frogger.GameObjects
 
                     if (gesture.Delta.X < 0)
                     {
-
-                        Position -= moveHorizontal;
+                        moveVector = Position - moveHorizontal;
+                        //Position -= moveHorizontal;
                         angle = (float)Math.PI * 1.5f;
 
                     }
                     if (gesture.Delta.X > 0)
                     {
-
-                        Position += moveHorizontal;
+                        moveVector = Position + moveHorizontal;
+                        // Position += moveHorizontal;
                         angle = (float)Math.PI / 2;
                     }
-                    keyDelay = 250;
+                    keyDelay = 150;
+                    isMoving = true;
                 } 
             }
-        }
+        }       
 
-        private void UpdateLocation()
+        private void UpdateLocation(GameTime theTime)
         {
+
+
             if (IsHit == true)
             {
                 RestartLocation();
                 IsHit = false;
             }
+
             if (IsStick == true)
             {
                 Position += new Vector2((int)Move.X, Move.Y);
+                moveVector += new Vector2((int)Move.X, Move.Y);
                 IsStick = false;
             }
             else if (Location.Y >= 3 * 52 && Location.Y <= 7 * 52 && !IsStick)
             {
                 RestartLocation();
             }
+
+            if ((Position.X != moveVector.X || Position.Y != moveVector.Y) && keyDelay > 0)
+            {
+                Position = Vector2.Lerp(Position, moveVector, (150 - keyDelay) / 150);
+
+                if (keyDelay > 0 && keyDelay < 20)
+                {
+                    textureIdx = 0;
+                }
+                else if (keyDelay > 20) {
+                    textureIdx = 1;
+                }
+            }
+            else
+            {
+                isMoving = false;
+                textureIdx = 2;
+            }
+
+
 
             Location = new Rectangle(
               (int)Position.X,
@@ -213,6 +253,7 @@ namespace Frogger.GameObjects
         public void RestartLocation()
         {
             Position = StartPosition;
+            moveVector = StartPosition;
             Location = new Rectangle((int)StartPosition.X, (int)StartPosition.Y, Texture.Width / 6, Texture.Height);
         }
     }
