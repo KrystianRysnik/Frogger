@@ -89,28 +89,28 @@ namespace Frogger.GameObjects
             {
                 Position -= moveVertical;
                 angle = 0f;
-                keyDelay = 200;
+                keyDelay = 250;
             }
 
             if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down) && keyDelay <= 0)
             {
                 Position += moveVertical;
                 angle = (float)Math.PI;
-                keyDelay = 125;
+                keyDelay = 250;
             }
 
             if (keyboardState.IsKeyDown(Keys.Left) & !previousState.IsKeyDown(Keys.Left) && keyDelay <= 0)
             {
                 Position -= moveHorizontal;
                 angle = (float)Math.PI * 1.5f;
-                keyDelay = 125;
+                keyDelay = 250;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) & !previousState.IsKeyDown(Keys.Right) && keyDelay <= 0)
             {
                 Position += moveHorizontal;
                 angle = (float)Math.PI / 2;
-                keyDelay = 125;
+                keyDelay = 250;
             }
 
             previousState = Keyboard.GetState();
