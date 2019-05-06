@@ -30,11 +30,13 @@ namespace Frogger.Display
         int Level { set; get; } // Show max 15
         int Life { set; get; }
         int MetaReach = 0;
-        
+        int rewardForJump = 0;
+                
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
             hud = new HUD();
             player = new Frog("green", new Vector2(8 * (Game1.textureManager.frogGreen.Width/6), 14 * 52));
+            rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
 
             for (int i = 0; i < 5; i++)
             {
@@ -94,15 +96,10 @@ namespace Frogger.Display
             }
 
             hud.Update(theTime);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (!hud.isReachMeta)
             {
-                hud.Score += 1000;
-                hud.Level++;
-                hud.UpdateScore();          
-            }         
-
-            player.Update(theTime);
+                player.Update(theTime);
+            }
 
             foreach (Car car in cars)
             {
@@ -120,17 +117,17 @@ namespace Frogger.Display
                     turtle.Update(theTime);
                     if (turtle.Location.Intersects(player.Location))
                     {
-                        player.isCollision = true;
+                        player.IsCollision = true;
                     }
                 }
-                if (player.isCollision)
+                if (player.IsCollision)
                 {
                     if (turtles[0].Location.X < player.Location.X + 15 && turtles[0].Location.Y == player.Location.Y
                         && player.Location.X - 15 < turtles[turtles.Length - 1].Location.X)
                     {
                         player.IsStick = true;
                         player.StickMove(turtles[0].Position);
-                        player.isCollision = false;
+                        player.IsCollision = false;
                     }
                 }            
             }
@@ -152,15 +149,34 @@ namespace Frogger.Display
                 {
                     m.IsShow = true;
                     MetaReach++;
+                    hud.isReachMeta = true;
                     hud.Score += 200;
-                    hud.Time = 60.0f;
-                    player.RestartLocation();
+                    RestartPlayerLocation();
                 }
                 if (MetaReach == 5)
                 {
                     NewStage();
                 }
             }
+            if (player.IsHit == true)
+            {
+                RestartPlayerLocation();
+                hud.Life--;
+                player.IsHit = false;
+            }
+
+            if (player.IsStick == true)
+            {
+                player.Position += new Vector2((int)player.Move.X, player.Move.Y);
+                player.moveVector += new Vector2((int)player.Move.X, player.Move.Y);
+                player.IsStick = false;
+            }
+            else if (player.Location.Y >= 3 * 52 && player.Location.Y <= 7 * 52 && !player.IsStick)
+            {
+                RestartPlayerLocation();
+                hud.Life--;
+            }
+            CheckRewardForJump();
         }
 
         public override void Draw(SpriteBatch theBatch)
@@ -193,18 +209,33 @@ namespace Frogger.Display
         {
             isGameStarted = true;
             isGameOver = false;
-            player.RestartLocation();
+            RestartPlayerLocation();
         }
 
         private void NewStage()
         {            
             hud.Level++;
-            player.RestartLocation();
+            RestartPlayerLocation();
             foreach (Meta m in meta)
             {
                 m.IsShow = false;
             }
             MetaReach = 0;
+        }
+
+        private void RestartPlayerLocation()
+        {
+            player.RestartLocation();
+            rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
+        }
+
+        private void CheckRewardForJump()
+        {
+            if (rewardForJump >= player.Location.Y)
+            {
+                hud.Score += 10;
+                rewardForJump -= Game1.textureManager.frogGreen.Height;
+            }
         }
 
         private void logsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
