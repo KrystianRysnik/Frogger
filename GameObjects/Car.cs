@@ -21,76 +21,53 @@ namespace Frogger.GameObjects
         Texture2D Texture { set; get; }
         public Rectangle Location { set; get; }
 
-        bool move = false;
+        int RestartPosition { set; get; }
 
-        double elapsedTime, timeToUpdate = 8000, timeToMove;
-
-        public Car(int row, int delay)
+        public Car(int row, Vector2 position, int restartPosition)
         {
             Row = row;
-            timeToMove = delay;
+            RestartPosition = restartPosition;
             switch (Row)
             {
-                case 1:
+                case 13:
                     Texture = Game1.textureManager.carFirst;
-                    Location = new Rectangle(Game1.WIDTH + Texture.Width, 13 * 52, Texture.Width, Texture.Height);
-                    Speed = new Vector2(-2, 0);
+                    Speed = new Vector2(-1.5f, 0);
                     break;
-                case 2:
+                case 12:
                     Texture = Game1.textureManager.carSecond;
-                    Location = new Rectangle(0 - Texture.Width, 12 * 52, Texture.Width, Texture.Height);
-                    Speed = new Vector2(2, 0);
+                    Speed = new Vector2(1.5f, 0);
                     break;
-                case 3:
+                case 11:
                     Texture = Game1.textureManager.carThird;
-                    Location = new Rectangle(Game1.WIDTH + Texture.Width, 11 * 52, Texture.Width, Texture.Height);
-                    Speed = new Vector2(-2, 0);
+                    Speed = new Vector2(-1.5f, 0);
                     break;
-                case 4:
+                case 10:
                     Texture = Game1.textureManager.carFourth;
-                    Location = new Rectangle(0 - Texture.Width, 10 * 52, Texture.Width, Texture.Height);
-                    Speed = new Vector2(2, 0);
+                    Speed = new Vector2(1.4f, 0);
                     break;
-                case 5:
+                case 9:
                     Texture = Game1.textureManager.carFifth;
-                    Location = new Rectangle(Game1.WIDTH + Texture.Width, 9 * 52, Texture.Width, Texture.Height);
-                    Speed = new Vector2(-2, 0);
+                    Speed = new Vector2(-1.3f, 0);
+                    break;
+                default:
                     break;
             }
+
+            Location = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
         }
 
         public void Update(GameTime theTime)
         {
-            elapsedTime += theTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (elapsedTime > timeToMove)
+            if (Location.X >= RestartPosition && RestartPosition >= Game1.WIDTH)
             {
-                move = true;
+                Location = new Rectangle(-Texture.Width, Location.Y, Texture.Width, Texture.Height);
             }
-
-            if (move)
+            else if (Location.X <= RestartPosition && RestartPosition <= 0)
             {
-                if (elapsedTime > timeToUpdate + timeToMove)
-                {
-                    elapsedTime -= timeToUpdate;
-
-                    if (Speed.X < 0)
-                    {
-                        Location = new Rectangle(Game1.WIDTH + Texture.Width, Location.Y, Texture.Width, Texture.Height);
-                    }
-                    else
-                    {
-                        Location = new Rectangle(0 - Texture.Width, Location.Y, Texture.Width, Texture.Height);
-                    }
-                }
-
-                Location = new Rectangle(Location.X + (int)Speed.X, Location.Y, Texture.Width, Texture.Height);
+                Location = new Rectangle(Game1.WIDTH + Texture.Width, Location.Y, Texture.Width, Texture.Height);
             }
-
-
-
-
-        }
+            Location = new Rectangle(Location.X + (int)Speed.X, Location.Y, Texture.Width, Texture.Height);
+        }   
 
         public void Draw(SpriteBatch theBatch)
         {
