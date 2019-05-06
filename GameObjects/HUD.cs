@@ -18,12 +18,16 @@ namespace Frogger.GameObjects
     {
         string hiScore = "00000";
         string firstUp = "00000";
+        string timeString = "00";
         public long Score { set; get; }
         public long Level { set; get; }
         public long Life { set; get; }
         public float Time { set; get; }
+        public bool isGameOver = false;
+        public bool isGameStarted = true;
+        public bool isReachMeta = false;
 
-        double elapsedTime, timeToUpdate = 500;
+        float elapsedTime, timeToUpdate = 500, showTimeDelay = 4000;
 
         int Fill { set; get; }
 
@@ -40,14 +44,20 @@ namespace Frogger.GameObjects
         {
             if (Time > 0.0f)
             {
-                UpdateTime(theTime);
+                if (isReachMeta)
+                {
+                    ShowTime(theTime);
+                }
+                else
+                {
+                    UpdateTime(theTime);
+                }
                 UpdateScore();
             }
             else
             {
                 // TODO: Game Over / Play Again
-            }
-            
+            }           
         }
 
         public void Draw(SpriteBatch theBatch)
@@ -70,6 +80,11 @@ namespace Frogger.GameObjects
                 }
             }
             theBatch.Draw(Game1.timeCounter, new Vector2(4.5f * 52, 15.5f * 52 + 8), Color.White);
+            if (isReachMeta)
+            {
+                theBatch.Draw(Game1.timeBackground, new Vector2(Game1.WIDTH / 2 - Game1.timeBackground.Width / 2, 8.5f * 52), Color.White);
+                theBatch.DrawString(Game1.eightBitFont, "TIME " + (timeString += (((int)Time).ToString())).Substring(timeString.Length - 2), new Vector2(Game1.WIDTH/2 - (3.5f * 28), 8.5f * 52), Color.Red);
+            }
         }
 
         public void UpdateScore()
@@ -89,9 +104,24 @@ namespace Frogger.GameObjects
             }
         }
 
+        private void ShowTime(GameTime theTime)
+        {
+            elapsedTime += (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            if (showTimeDelay > 0)
+            {
+                showTimeDelay -= (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            }
+            else
+            {
+                isReachMeta = false;
+                showTimeDelay = 4000;
+                Time = 60.0f;
+            }
+        }
+
         private void UpdateTime(GameTime theTime)
         {
-            elapsedTime += theTime.ElapsedGameTime.TotalMilliseconds;
+            elapsedTime += (float)theTime.ElapsedGameTime.TotalMilliseconds;
 
             if (elapsedTime > timeToUpdate)
             {
