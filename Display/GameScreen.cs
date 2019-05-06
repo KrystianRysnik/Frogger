@@ -59,32 +59,11 @@ namespace Frogger.Display
             logsInRowStageOne(3, 4, 52, 0, Game1.WIDTH + 52*4);
             logsInRowStageOne(5, 6, 104, 104, Game1.WIDTH + 52 * 3);
 
-            cars.Add(new Car(1, 0));
-            cars.Add(new Car(1, 1700));
-            cars.Add(new Car(1, 2*1700));
-            cars.Add(new Car(1, 3*1700));
-
-            cars.Add(new Car(2, 0));
-            cars.Add(new Car(2, 2000));
-            cars.Add(new Car(2, 2*2000));
-            cars.Add(new Car(2, 3*2000));
-
-            cars.Add(new Car(3, 0));
-            cars.Add(new Car(3, 1200));
-            cars.Add(new Car(3, 2 * 1200));
-            cars.Add(new Car(3, 3 * 1200));
-            cars.Add(new Car(3, 4 * 1200));
-
-            cars.Add(new Car(4, 0));
-            cars.Add(new Car(4, 2000));
-            cars.Add(new Car(4, 2 * 2000));
-            cars.Add(new Car(4, 3 * 2000));
-
-            cars.Add(new Car(5, 0));
-            cars.Add(new Car(5, 2000));
-            cars.Add(new Car(5, 2 * 2000));
-            cars.Add(new Car(5, 3 * 2000));
-
+            carsInRowStageOne(9, 2, (int)(5.5 * 52), Game1.WIDTH / 2, -104);
+            carsInRowStageOne(10, 1, 4 * 52, -108, Game1.WIDTH);
+            carsInRowStageOne(11, 3, 4 * 52, Game1.WIDTH / 2 - 52, -78);
+            carsInRowStageOne(12, 2, 4 * 52, Game1.WIDTH / 2 - 52, Game1.WIDTH + 52);
+            carsInRowStageOne(13, 3, (int)(4.5 * 52), Game1.WIDTH / 2 - 52, -78);
         }
 
         public override void Update(GameTime theTime)
@@ -106,8 +85,7 @@ namespace Frogger.Display
                 car.Update(theTime);
                 if (car.Location.Intersects(player.Location))
                 {
-                    //player.IsHit = true;
-                    //player.Update(theTime);
+                    player.IsHit = true;
                 }
             }
             foreach (Turtle[] turtles in groupOfTurtles)
@@ -265,6 +243,16 @@ namespace Frogger.Display
                 }
             }
         }
+
+        private void carsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                cars.Add(new Car(row, new Vector2(startFrom, row * 52), restart));
+                startFrom += spaceBetween;
+            }
+         }       
+        
 
         private void turtlesInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
         {
