@@ -19,6 +19,7 @@ namespace Frogger.Display
         protected EventHandler ScreenEvent;
         public static bool isGameStarted = false;
         public static bool isGameOver = false;
+        public static long userScore = 1;
 
         public Screen(EventHandler theScreenEvent)
         {

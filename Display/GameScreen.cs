@@ -70,6 +70,8 @@ namespace Frogger.Display
         {
             if (hud.isGameOver && hud.slidePosition.X == 0)
             {
+                Game1.scoreManager.SaveScore(hud.Score);
+                userScore = hud.Score;            
                 ScreenEvent.Invoke(this, new EventArgs());
                 return;
             }

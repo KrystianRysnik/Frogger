@@ -72,6 +72,7 @@
     <Compile Include="GameObjects\Turtle.cs" />
     <Compile Include="GameObjects\Wall.cs" />
     <Compile Include="Helpers\AudioManager.cs" />
+    <Compile Include="Helpers\ScoreManager.cs" />
     <Compile Include="Helpers\TextureManager.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

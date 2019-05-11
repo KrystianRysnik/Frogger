@@ -15,6 +15,7 @@ namespace Frogger
     {
         public static TextureManager textureManager;
         public static AudioManager audioManager;
+        public static ScoreManager scoreManager;
 
         HomeScreen m_HomeScreen;
         GameScreen m_GameScreen;
@@ -92,6 +93,7 @@ namespace Frogger
 
             // TODO: use this.Content to load your game content here
             textureManager = new TextureManager(this.Content);
+            scoreManager = new ScoreManager();
 
             waterBackground = new Texture2D(graphics.GraphicsDevice, WIDTH, 8 * 52);
             Color[] data = new Color[WIDTH * 8 * 52];
@@ -126,7 +128,7 @@ namespace Frogger
             m_HomeScreen = new HomeScreen(this.Content, new EventHandler(HomeScreenEvent));
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
             m_ScoreScreen = new ScoreScreen(this.Content, new EventHandler(ScoreScreenEvent));
-            m_CurrentScreen = m_ScoreScreen;
+            m_CurrentScreen = m_HomeScreen;
 
         }
 
