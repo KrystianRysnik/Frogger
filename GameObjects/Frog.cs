@@ -36,15 +36,18 @@ namespace Frogger.GameObjects
         public bool IsHit { set; get; }
         public bool IsStick { set; get; }
         public bool IsCollision { set; get; }  
+        public bool IsDead { set; get; }
 
         float angle = 0f;
-        float elapsedTime, keyDelay = 0;
-        int textureIdx = 2;
+        float elapsedTime, keyDelay = 0, timeToUpdate = 300;
+        int textureIdx = 2, deadIdx = 0;
+        
 
         public Frog(string name, Vector2 position)
         {
             IsHit = false;
             IsStick = false;
+            IsDead = false;
             Texture = Game1.textureManager.frogGreen;
             StartPosition = position;
 
@@ -62,16 +65,26 @@ namespace Frogger.GameObjects
         }
 
         public void Update(GameTime theTime)
-        {
+        {          
             HandleTime(theTime);
-            KeyboardControl();
-            TouchControl();
-            UpdateLocation(theTime);
+            if (!IsDead)
+            {
+                KeyboardControl();
+                TouchControl();
+                UpdateLocation(theTime);
+            }
         }
 
         public void Draw(SpriteBatch theBatch)
         {
-           theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width/12, Location.Y + Texture.Height/2, Location.Width, Location.Height), new Rectangle(Texture.Width / 6 * textureIdx, 0, Texture.Width / 6, Texture.Height), Color.White, angle, new Vector2(Texture.Width / 12, Texture.Height / 2), SpriteEffects.None, 1);
+            if (!IsDead)
+            {
+                theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width / 12, Location.Y + Texture.Height / 2, Location.Width, Location.Height), new Rectangle(Texture.Width / 6 * textureIdx, 0, Texture.Width / 6, Texture.Height), Color.White, angle, new Vector2(Texture.Width / 12, Texture.Height / 2), SpriteEffects.None, 1);
+            }
+            else
+            {
+                theBatch.Draw(Game1.textureManager.frogDead, new Rectangle(Location.X + Game1.textureManager.frogDead.Width / 8, Location.Y + Game1.textureManager.frogDead.Height / 2, Location.Width, Location.Height), new Rectangle(Game1.textureManager.frogDead.Width / 4 * deadIdx, 0, Game1.textureManager.frogDead.Width / 4, Game1.textureManager.frogDead.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
+            }
 
 
         }
@@ -86,6 +99,23 @@ namespace Frogger.GameObjects
             else
             {
                 IsMoving = false;
+            }
+
+            if (IsDead && timeToUpdate > 0)
+            {
+                timeToUpdate -= (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            }
+            else if (IsDead)
+            {
+                if (deadIdx > 3)
+                {
+                    IsDead = false;
+                    timeToUpdate = 300;
+                    RestartLocation();
+                    deadIdx = 0;
+                }
+                timeToUpdate = 300;
+                deadIdx++;
             }
         }
 
@@ -175,7 +205,7 @@ namespace Frogger.GameObjects
 
         private void UpdateLocation(GameTime theTime)
         {        
-            if ((Position.X != moveVector.X || Position.Y != moveVector.Y) && keyDelay > 0)
+            if ((Position.X != moveVector.X || Position.Y != moveVector.Y) && keyDelay > 0 && !IsDead)
             {
                 Position = Vector2.Lerp(Position, moveVector, (150 - keyDelay) / 150);
 
@@ -187,13 +217,11 @@ namespace Frogger.GameObjects
                     textureIdx = 1;
                 }
             }
-            else
+            else if (!IsDead)
             {
                 IsMoving = false;
                 textureIdx = 2;
-            }
-
-
+            }     
 
             Location = new Rectangle(
               (int)Position.X,
@@ -231,6 +259,7 @@ namespace Frogger.GameObjects
         {
             Position = StartPosition;
             moveVector = StartPosition;
+            angle = 0f;
             Location = new Rectangle((int)StartPosition.X, (int)StartPosition.Y, Texture.Width / 6, Texture.Height);
         }     
     }

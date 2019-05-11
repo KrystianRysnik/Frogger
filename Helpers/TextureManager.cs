@@ -17,7 +17,8 @@ namespace Frogger.Helpers
     public class TextureManager
     {
         // Frogs
-        public Texture2D frogGreen;
+        public Texture2D frogGreen,
+            frogDead;
 
         // Cars
         public Texture2D carFirst,
@@ -50,6 +51,7 @@ namespace Frogger.Helpers
         private void loadTextures(ContentManager theContent)
         {
             frogGreen = theContent.Load<Texture2D>("Texture/frogGreen");
+            frogDead = theContent.Load<Texture2D>("Texture/frogDead");
 
             carFirst = theContent.Load<Texture2D>("Texture/car_1");
             carSecond = theContent.Load<Texture2D>("Texture/car_2");

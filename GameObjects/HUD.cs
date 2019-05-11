@@ -26,13 +26,19 @@ namespace Frogger.GameObjects
         public bool isGameOver = false;
         public bool isGameStarted = true;
         public bool isReachMeta = false;
+        public bool isTimeEnd = false;
+        public bool isSlideBackground = false;
+        float slideEffect = 1.3f;
+        Vector2 slidePosition;
 
-        float elapsedTime, timeToUpdate = 500, showTimeDelay = 4000;
+
+        float elapsedTime, timeToUpdate = 500, showTimeDelay = 4000, gameOverDelay = 50;
 
         int Fill { set; get; }
 
         public HUD()
         {
+            slidePosition = new Vector2(Game1.WIDTH * slideEffect, 0);
             Time = 60.0f;
             Score = 0;
             Life = 4;
@@ -56,8 +62,18 @@ namespace Frogger.GameObjects
             }
             else
             {
-                // TODO: Game Over / Play Again
-            }           
+                isTimeEnd = true;
+            }
+
+            if (Life <= 0 )
+            {
+                isGameOver = true;
+            }    
+            
+            if (isGameOver)
+            {
+                GameOverTime(theTime);
+            }
         }
 
         public void Draw(SpriteBatch theBatch)
@@ -84,6 +100,13 @@ namespace Frogger.GameObjects
             {
                 theBatch.Draw(Game1.timeBackground, new Vector2(Game1.WIDTH / 2 - Game1.timeBackground.Width / 2, 8.5f * 52), Color.White);
                 theBatch.DrawString(Game1.eightBitFont, "TIME " + (timeString += (((int)Time).ToString())).Substring(timeString.Length - 2), new Vector2(Game1.WIDTH/2 - (3.5f * 28), 8.5f * 52), Color.Red);
+            }
+            if (isGameOver)
+            {
+                theBatch.Draw(Game1.gameOverBackground, new Vector2(Game1.WIDTH / 2 - Game1.timeBackground.Width / 2, 8.5f * 52), Color.White);
+                theBatch.DrawString(Game1.eightBitFont, "GAME OVER", new Vector2(Game1.WIDTH / 2 - (3.5f * 28), 8.5f * 52), Color.Red);
+                theBatch.Draw(Game1.blackBackground, slidePosition, Color.White);
+                theBatch.Draw(Game1.waterBackground, slidePosition, Color.White);
             }
         }
 
@@ -116,6 +139,28 @@ namespace Frogger.GameObjects
                 isReachMeta = false;
                 showTimeDelay = 4000;
                 Time = 60.0f;
+            }
+        }
+
+        private void GameOverTime(GameTime theTime)
+        {
+            elapsedTime += (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            if (gameOverDelay > 0)
+            {
+                gameOverDelay -= (float)theTime.ElapsedGameTime.TotalMilliseconds;
+            }
+            else
+            {
+                if (slideEffect > 0)
+                {
+                    gameOverDelay = 75;
+                    slideEffect -= 0.05f;
+                    slidePosition = new Vector2(Game1.WIDTH * slideEffect, 0);
+                    if (slidePosition.X < 0)
+                    {
+                        slidePosition = new Vector2(0, 0);
+                    }
+                }
             }
         }
 

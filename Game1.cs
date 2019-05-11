@@ -36,8 +36,10 @@ namespace Frogger
         public KeyboardState previousState;
 
         public static Texture2D waterBackground;
+        public static Texture2D blackBackground;
         public static Texture2D timeCounter;
         public static Texture2D timeBackground;
+        public static Texture2D gameOverBackground;
         public static SpriteFont eightBitFont;
 
         public Game1()
@@ -96,6 +98,12 @@ namespace Frogger
                 data[i] = new Color(0, 4, 76);
             waterBackground.SetData(data);
 
+            blackBackground = new Texture2D(graphics.GraphicsDevice, WIDTH, HEIGHT);
+            data = new Color[WIDTH * HEIGHT];
+            for (int i = 0; i < data.Length; ++i)
+                data[i] = new Color(0, 0, 0);
+            blackBackground.SetData(data);
+
             timeCounter = new Texture2D(graphics.GraphicsDevice, 374, 26);
             data = new Color[timeCounter.Width * timeCounter.Height];
             timeCounter.SetData(data);
@@ -105,6 +113,12 @@ namespace Frogger
             for (int i = 0; i < data.Length; ++i)
                 data[i] = new Color(0, 0, 0);
             timeBackground.SetData(data);
+
+            gameOverBackground = new Texture2D(graphics.GraphicsDevice, 28 * 9, 26);
+            data = new Color[gameOverBackground.Width * gameOverBackground.Height];
+            for (int i = 0; i < data.Length; ++i)
+                data[i] = new Color(0, 0, 0);
+            gameOverBackground.SetData(data);
 
             eightBitFont = Content.Load<SpriteFont>("Font/8bit");
 

@@ -74,87 +74,110 @@ namespace Frogger.Display
                 return;
             }
 
-            hud.Update(theTime);
-            if (!hud.isReachMeta)
+            if (!player.IsDead)
+            {
+                hud.Update(theTime);
+                if (!hud.isReachMeta && !hud.isGameOver)
+                {
+                    player.Update(theTime);
+                }
+
+                if (hud.isTimeEnd)
+                {
+                    player.RestartLocation();
+                    hud.Time = 60f;
+                    hud.isTimeEnd = false;
+                    hud.Life--;
+                }
+
+                foreach (Car car in cars)
+                {
+                    car.Update(theTime);
+                    if (car.Location.Intersects(player.Location))
+                    {
+                        player.IsHit = true;
+                    }
+                }
+                foreach (Turtle[] turtles in groupOfTurtles)
+                {
+                    foreach (Turtle turtle in turtles)
+                    {
+                        turtle.Update(theTime);
+                        if (turtle.Location.Intersects(player.Location))
+                        {
+                            player.IsCollision = true;
+                        }
+                    }
+                    if (player.IsCollision)
+                    {
+                        if (turtles[0].Location.X < player.Location.X + 15 && turtles[0].Location.Y == player.Location.Y
+                            && player.Location.X - 15 < turtles[turtles.Length - 1].Location.X)
+                        {
+                            player.IsStick = true;
+                            player.StickMove(turtles[0].Position);
+                            player.IsCollision = false;
+                        }
+                    }
+                }
+                foreach (Log log in logs)
+                {
+                    log.Update(theTime);
+                    if (log.Location.Intersects(player.Location))
+                    {
+                        if (player.ShouldIStickToThisObject(log))
+                        {
+                            player.IsStick = true;
+                            player.StickMove(log.Position);
+                        }
+                    }
+                }
+                foreach (Meta m in meta)
+                {
+                    if (m.Location.Intersects(player.Location) && !m.IsShow && player.Location.Y < 3 * 52)
+                    {
+                        m.IsShow = true;
+                        MetaReach++;
+                        hud.isReachMeta = true;
+                        hud.Score += 200;
+                        RestartPlayerLocation(false);
+                    }
+                    if (MetaReach == 5)
+                    {
+                        NewStage();
+                    }
+                }
+                if (player.IsHit == true)
+                {
+                    RestartPlayerLocation(true);
+                    player.IsHit = false;
+                }
+
+                if (player.IsStick == true)
+                {
+                    player.Position += new Vector2((int)player.Move.X, player.Move.Y);
+                    player.moveVector += new Vector2((int)player.Move.X, player.Move.Y);
+                    player.IsStick = false;
+                }
+                else if (player.Location.Y >= 3 * 52 && player.Location.Y <= 7 * 52 && !player.IsStick)
+                {
+                    RestartPlayerLocation(true);
+                }
+                CheckRewardForJump();
+            }
+            else
             {
                 player.Update(theTime);
-            }
+                logs.ForEach(log => log.Update(theTime));
+                cars.ForEach(car => car.Update(theTime));
 
-            foreach (Car car in cars)
-            {
-                car.Update(theTime);
-                if (car.Location.Intersects(player.Location))
+                foreach (Turtle[] turtles in groupOfTurtles)
                 {
-                    player.IsHit = true;
-                }
-            }
-            foreach (Turtle[] turtles in groupOfTurtles)
-            {
-                foreach (Turtle turtle in turtles)
-                {
-                    turtle.Update(theTime);
-                    if (turtle.Location.Intersects(player.Location))
+                    foreach (Turtle turtle in turtles)
                     {
-                        player.IsCollision = true;
+                        turtle.Update(theTime);
                     }
                 }
-                if (player.IsCollision)
-                {
-                    if (turtles[0].Location.X < player.Location.X + 15 && turtles[0].Location.Y == player.Location.Y
-                        && player.Location.X - 15 < turtles[turtles.Length - 1].Location.X)
-                    {
-                        player.IsStick = true;
-                        player.StickMove(turtles[0].Position);
-                        player.IsCollision = false;
-                    }
-                }            
             }
-            foreach (Log log in logs)
-            {
-                log.Update(theTime);
-                if (log.Location.Intersects(player.Location))
-                { 
-                    if (player.ShouldIStickToThisObject(log))
-                    {
-                        player.IsStick = true;
-                        player.StickMove(log.Position);
-                    }
-                }
-            }     
-            foreach (Meta m in meta)
-            {
-                if (m.Location.Intersects(player.Location) && !m.IsShow && player.Location.Y < 3 * 52)
-                {
-                    m.IsShow = true;
-                    MetaReach++;
-                    hud.isReachMeta = true;
-                    hud.Score += 200;
-                    RestartPlayerLocation();
-                }
-                if (MetaReach == 5)
-                {
-                    NewStage();
-                }
-            }
-            if (player.IsHit == true)
-            {
-                RestartPlayerLocation();
-                hud.Life--;
-                player.IsHit = false;
-            }
-
-            if (player.IsStick == true)
-            {
-                player.Position += new Vector2((int)player.Move.X, player.Move.Y);
-                player.moveVector += new Vector2((int)player.Move.X, player.Move.Y);
-                player.IsStick = false;
-            }
-            else if (player.Location.Y >= 3 * 52 && player.Location.Y <= 7 * 52 && !player.IsStick)
-            {
-                RestartPlayerLocation();
-                hud.Life--;
-            }
-            CheckRewardForJump();
         }
 
         public override void Draw(SpriteBatch theBatch)
@@ -187,13 +210,13 @@ namespace Frogger.Display
         {
             isGameStarted = true;
             isGameOver = false;
-            RestartPlayerLocation();
+            RestartPlayerLocation(false);
         }
 
         private void NewStage()
         {            
             hud.Level++;
-            RestartPlayerLocation();
+            RestartPlayerLocation(false);
             foreach (Meta m in meta)
             {
                 m.IsShow = false;
@@ -201,9 +224,16 @@ namespace Frogger.Display
             MetaReach = 0;
         }
 
-        private void RestartPlayerLocation()
+        private void RestartPlayerLocation(bool isDead)
         {
-            player.RestartLocation();
+            if (isDead)
+            {
+                player.IsDead = true;
+                hud.Life--;
+            } else
+            { 
+               player.RestartLocation();
+            }
             rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
         }
 
