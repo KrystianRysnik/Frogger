@@ -29,7 +29,7 @@ namespace Frogger.GameObjects
         public bool isTimeEnd = false;
         public bool isSlideBackground = false;
         float slideEffect = 1.3f;
-        Vector2 slidePosition;
+        public Vector2 slidePosition;
 
 
         float elapsedTime, timeToUpdate = 500, showTimeDelay = 4000, gameOverDelay = 50;

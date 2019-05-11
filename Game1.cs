@@ -18,6 +18,7 @@ namespace Frogger
 
         HomeScreen m_HomeScreen;
         GameScreen m_GameScreen;
+        ScoreScreen m_ScoreScreen;
         Screen m_CurrentScreen;
 
         GraphicsDeviceManager graphics;
@@ -124,7 +125,8 @@ namespace Frogger
 
             m_HomeScreen = new HomeScreen(this.Content, new EventHandler(HomeScreenEvent));
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
-            m_CurrentScreen = m_HomeScreen;
+            m_ScoreScreen = new ScoreScreen(this.Content, new EventHandler(ScoreScreenEvent));
+            m_CurrentScreen = m_ScoreScreen;
 
         }
 
@@ -193,8 +195,12 @@ namespace Frogger
 
         public void GameScreenEvent(object obj, EventArgs e)
         {
+            m_CurrentScreen = m_ScoreScreen;
+        }
 
-
+        public void ScoreScreenEvent(object obj, EventArgs e)
+        {
+            m_CurrentScreen = m_HomeScreen;
         }
 
         protected Rectangle calculateAspectRectangle()

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Activity1.cs" />
     <Compile Include="Display\HomeScreen.cs" />
+    <Compile Include="Display\ScoreScreen.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Car.cs" />
     <Compile Include="GameObjects\Frog.cs" />

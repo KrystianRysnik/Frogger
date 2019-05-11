@@ -68,7 +68,7 @@ namespace Frogger.Display
 
         public override void Update(GameTime theTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.P) || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (hud.isGameOver && hud.slidePosition.X == 0)
             {
                 ScreenEvent.Invoke(this, new EventArgs());
                 return;
