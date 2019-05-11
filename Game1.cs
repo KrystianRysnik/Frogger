@@ -190,6 +190,7 @@ namespace Frogger
 
         public void HomeScreenEvent(object obj, EventArgs e)
         {
+            m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));        
             m_CurrentScreen = m_GameScreen;
         }
 
