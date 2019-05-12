@@ -20,6 +20,7 @@ namespace Frogger.Display
     {
         public HomeScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+            Game1.audioManager.coin.Play();
         }
 
         public override void Update(GameTime theThime)

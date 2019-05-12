@@ -93,6 +93,7 @@ namespace Frogger
 
             // TODO: use this.Content to load your game content here
             textureManager = new TextureManager(this.Content);
+            audioManager = new AudioManager(this.Content);
             scoreManager = new ScoreManager();
 
             waterBackground = new Texture2D(graphics.GraphicsDevice, WIDTH, 8 * 52);

@@ -141,7 +141,7 @@ namespace Frogger.Display
                         MetaReach++;
                         hud.isReachMeta = true;
                         hud.Score += 200;
-                        RestartPlayerLocation(false);
+                        RestartPlayerLocation(false, false);
                     }
                     if (MetaReach == 5)
                     {
@@ -150,7 +150,7 @@ namespace Frogger.Display
                 }
                 if (player.IsHit == true)
                 {
-                    RestartPlayerLocation(true);
+                    RestartPlayerLocation(true, false);
                     player.IsHit = false;
                 }
 
@@ -162,7 +162,7 @@ namespace Frogger.Display
                 }
                 else if (player.Location.Y >= 3 * 52 && player.Location.Y <= 7 * 52 && !player.IsStick)
                 {
-                    RestartPlayerLocation(true);
+                    RestartPlayerLocation(true, true);
                 }
                 CheckRewardForJump();
             }
@@ -212,13 +212,13 @@ namespace Frogger.Display
         {
             isGameStarted = true;
             isGameOver = false;
-            RestartPlayerLocation(false);
+            RestartPlayerLocation(false, false);
         }
 
         private void NewStage()
         {            
             hud.Level++;
-            RestartPlayerLocation(false);
+            RestartPlayerLocation(false, false);
             foreach (Meta m in meta)
             {
                 m.IsShow = false;
@@ -226,13 +226,22 @@ namespace Frogger.Display
             MetaReach = 0;
         }
 
-        private void RestartPlayerLocation(bool isDead)
+        private void RestartPlayerLocation(bool isDead, bool isDrown)
         {
-            if (isDead)
+            if (isDead && isDrown)
+            {
+                player.IsDrown = true;
+                player.IsDead = true;
+                hud.Life--;
+                Game1.audioManager.plunk.Play();
+            }
+            else if (isDead && !isDrown)
             {
                 player.IsDead = true;
                 hud.Life--;
-            } else
+                Game1.audioManager.squash.Play();
+            }
+            else
             { 
                player.RestartLocation();
             }
@@ -285,7 +294,6 @@ namespace Frogger.Display
             }
          }       
         
-
         private void turtlesInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
         {
             Turtle[] turtles = new Turtle[length];

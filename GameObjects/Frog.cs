@@ -37,6 +37,7 @@ namespace Frogger.GameObjects
         public bool IsStick { set; get; }
         public bool IsCollision { set; get; }  
         public bool IsDead { set; get; }
+        public bool IsDrown { set; get; }
 
         float angle = 0f;
         float elapsedTime, keyDelay = 0, timeToUpdate = 300;
@@ -48,6 +49,7 @@ namespace Frogger.GameObjects
             IsHit = false;
             IsStick = false;
             IsDead = false;
+            IsDrown = false;
             Texture = Game1.textureManager.frogGreen;
             StartPosition = position;
 
@@ -81,11 +83,14 @@ namespace Frogger.GameObjects
             {
                 theBatch.Draw(Texture, new Rectangle(Location.X + Texture.Width / 12, Location.Y + Texture.Height / 2, Location.Width, Location.Height), new Rectangle(Texture.Width / 6 * textureIdx, 0, Texture.Width / 6, Texture.Height), Color.White, angle, new Vector2(Texture.Width / 12, Texture.Height / 2), SpriteEffects.None, 1);
             }
+            else if (IsDrown)
+            {
+                theBatch.Draw(Game1.textureManager.frogDrown, new Rectangle(Location.X + Game1.textureManager.frogDrown.Width / 8, Location.Y + Game1.textureManager.frogDrown.Height / 2, Location.Width, Location.Height), new Rectangle(Game1.textureManager.frogDrown.Width / 4 * deadIdx, 0, Game1.textureManager.frogDrown.Width / 4, Game1.textureManager.frogDrown.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
+            }
             else
             {
                 theBatch.Draw(Game1.textureManager.frogDead, new Rectangle(Location.X + Game1.textureManager.frogDead.Width / 8, Location.Y + Game1.textureManager.frogDead.Height / 2, Location.Width, Location.Height), new Rectangle(Game1.textureManager.frogDead.Width / 4 * deadIdx, 0, Game1.textureManager.frogDead.Width / 4, Game1.textureManager.frogDead.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
             }
-
 
         }
 
@@ -110,6 +115,7 @@ namespace Frogger.GameObjects
                 if (deadIdx > 3)
                 {
                     IsDead = false;
+                    IsDrown = false;
                     keyDelay = 150;
                     RestartLocation();
                     IsMoving = false;
@@ -180,7 +186,9 @@ namespace Frogger.GameObjects
                         moveVector = Position + moveVertical;
                         angle = (float)Math.PI;                      
                     }
+
                     keyDelay = 150;
+                    Game1.audioManager.hop.Play();
                     IsMoving = true;
                 }
 
@@ -199,6 +207,7 @@ namespace Frogger.GameObjects
                         angle = (float)Math.PI / 2;
                     }
                     keyDelay = 150;
+                    Game1.audioManager.hop.Play();
                     IsMoving = true;
                 } 
             }
