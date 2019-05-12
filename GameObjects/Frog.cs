@@ -110,8 +110,9 @@ namespace Frogger.GameObjects
                 if (deadIdx > 3)
                 {
                     IsDead = false;
-                    timeToUpdate = 300;
+                    keyDelay = 150;
                     RestartLocation();
+                    IsMoving = false;
                     deadIdx = 0;
                 }
                 timeToUpdate = 300;
