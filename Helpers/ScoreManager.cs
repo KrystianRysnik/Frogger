@@ -17,7 +17,6 @@ namespace Frogger.Helpers
     public class ScoreManager
     {
         IsolatedStorageFile savegameStorage = IsolatedStorageFile.GetUserStoreForDomain();
-        int highscore;
 
         public string[] list;
         public long[] scores = new long[6];
