@@ -42,7 +42,6 @@ namespace Frogger.GameObjects
         float angle = 0f;
         float elapsedTime, keyDelay = 0, timeToUpdate = 300;
         int textureIdx = 2, deadIdx = 0;
-        
 
         public Frog(string name, Vector2 position)
         {
@@ -71,7 +70,7 @@ namespace Frogger.GameObjects
             HandleTime(theTime);
             if (!IsDead)
             {
-                KeyboardControl();
+                //KeyboardControl();
                 TouchControl();
                 UpdateLocation(theTime);
             }
@@ -181,7 +180,7 @@ namespace Frogger.GameObjects
                         moveVector = Position - moveVertical;
                         angle = 0f;
                     }
-                    if (gesture.Delta.Y > 0)
+                    if (gesture.Delta.Y > 0 && Location.Y < StartPosition.Y)
                     {
                         moveVector = Position + moveVertical;
                         angle = (float)Math.PI;                      
@@ -195,13 +194,13 @@ namespace Frogger.GameObjects
                 if (gesture.GestureType == GestureType.HorizontalDrag && keyDelay <= 0)
                 {
 
-                    if (gesture.Delta.X < 0)
+                    if (gesture.Delta.X < 0 && Location.X > 0)
                     {
                         moveVector = Position - moveHorizontal;
                         angle = (float)Math.PI * 1.5f;
 
                     }
-                    if (gesture.Delta.X > 0)
+                    if (gesture.Delta.X > 0 && Location.X < Game1.WIDTH - (Texture.Width / 3))
                     {
                         moveVector = Position + moveHorizontal;
                         angle = (float)Math.PI / 2;
