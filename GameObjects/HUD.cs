@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
@@ -68,8 +69,15 @@ namespace Frogger.GameObjects
             if (Life <= 0 )
             {
                 isGameOver = true;
-            }    
-            
+                Game1.audioManager.themeInstance.Stop();
+
+                if (Game1.audioManager.scoreInstance.State != SoundState.Playing)
+                {
+                    Game1.audioManager.scoreInstance.Stop();
+                    Game1.audioManager.scoreInstance.Play();
+                }
+            }
+
             if (isGameOver)
             {
                 GameOverTime(theTime);

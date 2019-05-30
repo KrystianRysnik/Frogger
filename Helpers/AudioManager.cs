@@ -11,12 +11,14 @@ using Android.Views;
 using Android.Widget;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 namespace Frogger.Helpers
 {
     public class AudioManager
     {
-        public SoundEffect coin, extra, hop, plunk, squash, time;
+        public SoundEffect coin, extra, hop, plunk, squash, time, theme, score;
+        public SoundEffectInstance themeInstance, scoreInstance, squashInstance, plunkInstance, extraInstance;
 
          public AudioManager(ContentManager theContent)
         {
@@ -31,6 +33,16 @@ namespace Frogger.Helpers
             plunk = theContent.Load<SoundEffect>("Audio/plunk");
             squash = theContent.Load<SoundEffect>("Audio/squash");
             time = theContent.Load<SoundEffect>("Audio/time");
+            theme = theContent.Load<SoundEffect>("Audio/theme");
+            score = theContent.Load<SoundEffect>("Audio/score");
+
+            themeInstance = theme.CreateInstance();
+            scoreInstance = score.CreateInstance();
+            squashInstance = squash.CreateInstance();
+            plunkInstance = plunk.CreateInstance();
+            extraInstance = extra.CreateInstance();
+
+            themeInstance.IsLooped = true;
         }
     }
 }

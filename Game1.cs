@@ -195,6 +195,10 @@ namespace Frogger
         {
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));        
             m_CurrentScreen = m_GameScreen;
+
+            // Restart and play theme music
+            audioManager.themeInstance.Stop();
+            audioManager.themeInstance.Play();
         }
 
         public void GameScreenEvent(object obj, EventArgs e)
@@ -205,6 +209,9 @@ namespace Frogger
         public void ScoreScreenEvent(object obj, EventArgs e)
         {
             m_CurrentScreen = m_HomeScreen;
+
+            // Play "insert coin" sound effect
+            audioManager.coin.Play();
         }
 
         protected Rectangle calculateAspectRectangle()

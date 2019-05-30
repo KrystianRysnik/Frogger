@@ -37,11 +37,23 @@
 /processorParam:Quality=Best
 /build:Audio/plunk.wav
 
+#begin Audio/score.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/score.wav
+
 #begin Audio/squash.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/squash.wav
+
+#begin Audio/theme.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/theme.ogg
 
 #begin Audio/time.wav
 /importer:WavImporter

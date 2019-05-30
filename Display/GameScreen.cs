@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Frogger.GameObjects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -31,6 +32,8 @@ namespace Frogger.Display
         int Life { set; get; }
         int MetaReach = 0;
         int rewardForJump = 0;
+
+        bool isExtraSound = false;
                 
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
@@ -76,10 +79,27 @@ namespace Frogger.Display
                 return;
             }
 
+            if (Game1.audioManager.squashInstance.State != SoundState.Playing
+                && Game1.audioManager.plunkInstance.State != SoundState.Playing
+                && Game1.audioManager.themeInstance.State == SoundState.Paused)
+            {
+                if (isExtraSound == true && Game1.audioManager.extraInstance.State != SoundState.Playing)
+                {
+                    Game1.audioManager.themeInstance.Resume();
+                    isExtraSound = false;
+                }
+                else if (isExtraSound == false)
+                {
+                    Game1.audioManager.extraInstance.Play();
+                    isExtraSound = true;
+                }
+            }
+         
+
             if (!player.IsDead)
             {
                 hud.Update(theTime);
-                if (!hud.isReachMeta && !hud.isGameOver)
+                if (!hud.isGameOver)
                 {
                     player.Update(theTime);
                 }
@@ -233,13 +253,15 @@ namespace Frogger.Display
                 player.IsDrown = true;
                 player.IsDead = true;
                 hud.Life--;
-                Game1.audioManager.plunk.Play();
+                Game1.audioManager.themeInstance.Pause();
+                Game1.audioManager.plunkInstance.Play();
             }
             else if (isDead && !isDrown)
             {
                 player.IsDead = true;
                 hud.Life--;
-                Game1.audioManager.squash.Play();
+                Game1.audioManager.themeInstance.Pause();
+                Game1.audioManager.squashInstance.Play();
             }
             else
             { 
