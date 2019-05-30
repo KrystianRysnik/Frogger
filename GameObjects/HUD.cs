@@ -39,6 +39,8 @@ namespace Frogger.GameObjects
 
         public HUD()
         {
+            hiScore = "00000" + Game1.scoreManager.scores.Max().ToString();
+            hiScore = hiScore.Substring(hiScore.Length - 5);
             slidePosition = new Vector2(Game1.WIDTH * slideEffect, 0);
             Time = 60.0f;
             Score = 0;
@@ -190,9 +192,19 @@ namespace Frogger.GameObjects
                     {
                         data[j * Game1.timeCounter.Width + b] = new Color(0, 0, 0);
                     }
-                    for (int g = Fill; g < Game1.timeCounter.Width; g++)
+                    if (Time <= 10)
                     {
-                        data[j * Game1.timeCounter.Width + g] = new Color(20, 190, 0);
+                        for (int g = Fill; g < Game1.timeCounter.Width; g++)
+                        {
+                            data[j * Game1.timeCounter.Width + g] = Color.Red;
+                        }
+                    }
+                    else
+                    {
+                        for (int g = Fill; g < Game1.timeCounter.Width; g++)
+                        {
+                            data[j * Game1.timeCounter.Width + g] = new Color(20, 190, 0);
+                        }
                     }
                 }
                 Game1.timeCounter.SetData(data);

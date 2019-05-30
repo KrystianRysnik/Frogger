@@ -106,8 +106,7 @@ namespace Frogger.Display
 
                 if (hud.isTimeEnd)
                 {
-                    player.RestartLocation();
-                    hud.Time = 60f;
+                    RestartPlayerLocation(true, false);            
                     hud.isTimeEnd = false;
                     hud.Life--;
                 }
@@ -271,6 +270,7 @@ namespace Frogger.Display
             { 
                player.RestartLocation();
             }
+            hud.Time = 60f;
             rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
         }
 
