@@ -163,11 +163,18 @@ namespace Frogger.Display
                         hud.Score += 200;
                         RestartPlayerLocation(false, false);
                     }
+                  
                     if (MetaReach == 5)
                     {
                         NewStage();
                     }
                 }
+
+                if (player.Location.Y < 3 * 52 && hud.isReachMeta == false)
+                {
+                    player.IsHit = true;
+                }
+
                 if (player.IsHit == true)
                 {
                     RestartPlayerLocation(true, false);
@@ -239,10 +246,7 @@ namespace Frogger.Display
         {            
             hud.Level++;
             RestartPlayerLocation(false, false);
-            foreach (Meta m in meta)
-            {
-                m.IsShow = false;
-            }
+            meta.ForEach(m => m.IsShow = false);
             MetaReach = 0;
         }
 
