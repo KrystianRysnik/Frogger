@@ -256,6 +256,7 @@ namespace Frogger.Display
                 player.IsDrown = true;
                 player.IsDead = true;
                 hud.Life--;
+                hud.Time = 60f;
                 Game1.audioManager.themeInstance.Pause();
                 Game1.audioManager.plunkInstance.Play();
             }
@@ -263,6 +264,7 @@ namespace Frogger.Display
             {
                 player.IsDead = true;
                 hud.Life--;
+                hud.Time = 60f;
                 Game1.audioManager.themeInstance.Pause();
                 Game1.audioManager.squashInstance.Play();
             }
@@ -270,7 +272,6 @@ namespace Frogger.Display
             { 
                player.RestartLocation();
             }
-            hud.Time = 60f;
             rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
         }
 

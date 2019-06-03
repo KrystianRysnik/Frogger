@@ -149,6 +149,7 @@ namespace Frogger.GameObjects
                 isReachMeta = false;
                 showTimeDelay = 4000;
                 Time = 60.0f;
+                timeToUpdate = 500;
             }
         }
 
