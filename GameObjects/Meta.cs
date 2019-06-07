@@ -22,7 +22,7 @@ namespace Frogger.GameObjects
 
         public Meta(Vector2 _position)
         {
-            Texture = Game1.textureManager.meta;
+            Texture = FroggerGame.textureManager.meta;
             Location = new Rectangle((int)_position.X, (int)_position.Y, Texture.Width / 2, Texture.Height);
             IsShow = false;
         }

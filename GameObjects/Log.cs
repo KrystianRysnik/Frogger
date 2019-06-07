@@ -29,17 +29,17 @@ namespace Frogger.GameObjects
             RestartPosition = restartPosition;
             if (Length == 6)
             {
-                Texture = Game1.textureManager.logLonger;
+                Texture = FroggerGame.textureManager.logLonger;
                 Position = new Vector2(2.4f, 0);
             }
             else if (Length == 4)
             {
-                Texture = Game1.textureManager.logLong;
+                Texture = FroggerGame.textureManager.logLong;
                 Position = new Vector2(1.4f, 0);
             }
             else
             {
-                Texture = Game1.textureManager.log;
+                Texture = FroggerGame.textureManager.log;
                 Position = new Vector2(1.2f, 0);
             }
 

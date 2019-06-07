@@ -34,7 +34,7 @@ namespace Frogger.GameObjects
         {
             Name = name;
             RestartPosition = restartPosition;
-            Texture = Game1.textureManager.turtle;
+            Texture = FroggerGame.textureManager.turtle;
             Location = new Rectangle((int)position.X, (int)position.Y, Texture.Width / 2, Texture.Height);
             Position = new Vector2(-1.2f, 0);
             if (Name == "diver")
@@ -52,7 +52,7 @@ namespace Frogger.GameObjects
         {
             if (Location.X <= RestartPosition)
             {
-                Location = new Rectangle(Game1.WIDTH + Texture.Width / 5, Location.Y, Texture.Width / 5, Texture.Height);
+                Location = new Rectangle(FroggerGame.WIDTH + Texture.Width / 5, Location.Y, Texture.Width / 5, Texture.Height);
             }
             Location = new Rectangle(Location.X + (int)Position.X, Location.Y, Texture.Width / 5, Texture.Height);
 

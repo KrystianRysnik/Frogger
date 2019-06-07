@@ -20,7 +20,7 @@ namespace Frogger.Display
     {
         public HomeScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            Game1.audioManager.coin.Play();
+            FroggerGame.audioManager.coin.Play();
         }
 
         public override void Update(GameTime theThime)
@@ -38,10 +38,10 @@ namespace Frogger.Display
 
         public override void Draw(SpriteBatch theBatch)
         {
-            theBatch.DrawString(Game1.eightBitFont, "TAP", new Vector2((Game1.WIDTH / 2) - (1.5F * 28), 4 * 52), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, "SCREEN", new Vector2((Game1.WIDTH / 2) - (3 * 28), 6.5f * 52), new Color(255, 99, 255));
-            theBatch.DrawString(Game1.eightBitFont, "ONE PLAYER ONLY", new Vector2((Game1.WIDTH / 2) - (7.5F * 28), 8.5f * 52), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, "ONE EXTRA FROG 20000 PTS", new Vector2((Game1.WIDTH / 2) - (12 * 28), 10 * 52), Color.Red);
+            theBatch.DrawString(FroggerGame.eightBitFont, "TAP", new Vector2((FroggerGame.WIDTH / 2) - (1.5F * 28), 4 * 52), Color.White);
+            theBatch.DrawString(FroggerGame.eightBitFont, "SCREEN", new Vector2((FroggerGame.WIDTH / 2) - (3 * 28), 6.5f * 52), new Color(255, 99, 255));
+            theBatch.DrawString(FroggerGame.eightBitFont, "ONE PLAYER ONLY", new Vector2((FroggerGame.WIDTH / 2) - (7.5F * 28), 8.5f * 52), Color.White);
+            theBatch.DrawString(FroggerGame.eightBitFont, "ONE EXTRA FROG 20000 PTS", new Vector2((FroggerGame.WIDTH / 2) - (12 * 28), 10 * 52), Color.Red);
         }
     }
 }

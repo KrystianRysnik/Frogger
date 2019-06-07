@@ -39,14 +39,14 @@ namespace Frogger.GameObjects
 
         public HUD()
         {
-            hiScore = "00000" + Game1.scoreManager.scores.Max().ToString();
+            hiScore = "00000" + FroggerGame.scoreManager.scores.Max().ToString();
             hiScore = hiScore.Substring(hiScore.Length - 5);
-            slidePosition = new Vector2(Game1.WIDTH * slideEffect, 0);
+            slidePosition = new Vector2(FroggerGame.WIDTH * slideEffect, 0);
             Time = 60.0f;
             Score = 0;
             Life = 4;
             Level = 1;
-            Fill = Game1.timeCounter.Width - (int)((float)Time / 60f * (float)Game1.timeCounter.Width);
+            Fill = FroggerGame.timeCounter.Width - (int)((float)Time / 60f * (float)FroggerGame.timeCounter.Width);
         }
 
         public void Update(GameTime theTime)
@@ -71,12 +71,12 @@ namespace Frogger.GameObjects
             if (Life <= 0 )
             {
                 isGameOver = true;
-                Game1.audioManager.themeInstance.Stop();
+                FroggerGame.audioManager.themeInstance.Stop();
 
-                if (Game1.audioManager.scoreInstance.State != SoundState.Playing)
+                if (FroggerGame.audioManager.scoreInstance.State != SoundState.Playing)
                 {
-                    Game1.audioManager.scoreInstance.Stop();
-                    Game1.audioManager.scoreInstance.Play();
+                    FroggerGame.audioManager.scoreInstance.Stop();
+                    FroggerGame.audioManager.scoreInstance.Play();
                 }
             }
 
@@ -88,35 +88,35 @@ namespace Frogger.GameObjects
 
         public void Draw(SpriteBatch theBatch)
         {
-            theBatch.DrawString(Game1.eightBitFont, "1-UP", new Vector2((Game1.WIDTH / 4) - (2.5f * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, firstUp, new Vector2((Game1.WIDTH / 4) - (3.5f * 28), 30), Color.Red);
-            theBatch.DrawString(Game1.eightBitFont, "HI-SCORE", new Vector2((Game1.WIDTH / 2) - (4 * 28), 0), Color.White);
-            theBatch.DrawString(Game1.eightBitFont, hiScore, new Vector2((Game1.WIDTH / 2) - (2.5f * 28), 30), Color.Red);
-            theBatch.DrawString(Game1.eightBitFont, "TIME", new Vector2(Game1.WIDTH - (4 * 28), 15.5f * 52), Color.Yellow);
+            theBatch.DrawString(FroggerGame.eightBitFont, "1-UP", new Vector2((FroggerGame.WIDTH / 4) - (2.5f * 28), 0), Color.White);
+            theBatch.DrawString(FroggerGame.eightBitFont, firstUp, new Vector2((FroggerGame.WIDTH / 4) - (3.5f * 28), 30), Color.Red);
+            theBatch.DrawString(FroggerGame.eightBitFont, "HI-SCORE", new Vector2((FroggerGame.WIDTH / 2) - (4 * 28), 0), Color.White);
+            theBatch.DrawString(FroggerGame.eightBitFont, hiScore, new Vector2((FroggerGame.WIDTH / 2) - (2.5f * 28), 30), Color.Red);
+            theBatch.DrawString(FroggerGame.eightBitFont, "TIME", new Vector2(FroggerGame.WIDTH - (4 * 28), 15.5f * 52), Color.Yellow);
             for (int i = 0; i < Life; i++)
             {
-                theBatch.Draw(Game1.textureManager.life, new Vector2(i * Game1.textureManager.life.Width + ((i + 1) * 3) , 15 * 52 + 3), Color.White);
+                theBatch.Draw(FroggerGame.textureManager.life, new Vector2(i * FroggerGame.textureManager.life.Width + ((i + 1) * 3) , 15 * 52 + 3), Color.White);
             }
             for (int i = 0; i < 15; i++)
             {
-                theBatch.Draw(Game1.textureManager.level, new Vector2(Game1.WIDTH - ((i + 1) * Game1.textureManager.life.Width + ((i + 1) * 3)), 15 * 52 + 3), Color.White);
+                theBatch.Draw(FroggerGame.textureManager.level, new Vector2(FroggerGame.WIDTH - ((i + 1) * FroggerGame.textureManager.life.Width + ((i + 1) * 3)), 15 * 52 + 3), Color.White);
                 if (Level - 1 <= i)
                 {
                     break;
                 }
             }
-            theBatch.Draw(Game1.timeCounter, new Vector2(4.5f * 52, 15.5f * 52 + 8), Color.White);
+            theBatch.Draw(FroggerGame.timeCounter, new Vector2(4.5f * 52, 15.5f * 52 + 8), Color.White);
             if (isReachMeta)
             {
-                theBatch.Draw(Game1.timeBackground, new Vector2(Game1.WIDTH / 2 - Game1.timeBackground.Width / 2, 8.5f * 52), Color.White);
-                theBatch.DrawString(Game1.eightBitFont, "TIME " + (timeString += (((int)Time).ToString())).Substring(timeString.Length - 2), new Vector2(Game1.WIDTH/2 - (3.5f * 28), 8.5f * 52), Color.Red);
+                theBatch.Draw(FroggerGame.timeBackground, new Vector2(FroggerGame.WIDTH / 2 - FroggerGame.timeBackground.Width / 2, 8.5f * 52), Color.White);
+                theBatch.DrawString(FroggerGame.eightBitFont, "TIME " + (timeString += (((int)Time).ToString())).Substring(timeString.Length - 2), new Vector2(FroggerGame.WIDTH/2 - (3.5f * 28), 8.5f * 52), Color.Red);
             }
             if (isGameOver)
             {
-                theBatch.Draw(Game1.gameOverBackground, new Vector2(Game1.WIDTH / 2 - Game1.timeBackground.Width / 2, 8.5f * 52), Color.White);
-                theBatch.DrawString(Game1.eightBitFont, "GAME OVER", new Vector2(Game1.WIDTH / 2 - (3.5f * 28), 8.5f * 52), Color.Red);
-                theBatch.Draw(Game1.blackBackground, slidePosition, Color.White);
-                theBatch.Draw(Game1.waterBackground, slidePosition, Color.White);
+                theBatch.Draw(FroggerGame.gameOverBackground, new Vector2(FroggerGame.WIDTH / 2 - FroggerGame.timeBackground.Width / 2, 8.5f * 52), Color.White);
+                theBatch.DrawString(FroggerGame.eightBitFont, "GAME OVER", new Vector2(FroggerGame.WIDTH / 2 - (3.5f * 28), 8.5f * 52), Color.Red);
+                theBatch.Draw(FroggerGame.blackBackground, slidePosition, Color.White);
+                theBatch.Draw(FroggerGame.waterBackground, slidePosition, Color.White);
             }
         }
 
@@ -166,7 +166,7 @@ namespace Frogger.GameObjects
                 {
                     gameOverDelay = 75;
                     slideEffect -= 0.05f;
-                    slidePosition = new Vector2(Game1.WIDTH * slideEffect, 0);
+                    slidePosition = new Vector2(FroggerGame.WIDTH * slideEffect, 0);
                     if (slidePosition.X < 0)
                     {
                         slidePosition = new Vector2(0, 0);
@@ -184,31 +184,31 @@ namespace Frogger.GameObjects
                 elapsedTime -= timeToUpdate;
                 Time -= 0.5f;
 
-                Fill = Game1.timeCounter.Width - (int)((float)Time / 60f * (float)Game1.timeCounter.Width);
+                Fill = FroggerGame.timeCounter.Width - (int)((float)Time / 60f * (float)FroggerGame.timeCounter.Width);
                 
-                Color[] data = new Color[Game1.timeCounter.Width * Game1.timeCounter.Height];
-                for (int j = 0; j < Game1.timeCounter.Height; ++j)
+                Color[] data = new Color[FroggerGame.timeCounter.Width * FroggerGame.timeCounter.Height];
+                for (int j = 0; j < FroggerGame.timeCounter.Height; ++j)
                 {
                     for (int b = 0; b < Fill; b++)
                     {
-                        data[j * Game1.timeCounter.Width + b] = new Color(0, 0, 0);
+                        data[j * FroggerGame.timeCounter.Width + b] = new Color(0, 0, 0);
                     }
                     if (Time <= 10)
                     {
-                        for (int g = Fill; g < Game1.timeCounter.Width; g++)
+                        for (int g = Fill; g < FroggerGame.timeCounter.Width; g++)
                         {
-                            data[j * Game1.timeCounter.Width + g] = Color.Red;
+                            data[j * FroggerGame.timeCounter.Width + g] = Color.Red;
                         }
                     }
                     else
                     {
-                        for (int g = Fill; g < Game1.timeCounter.Width; g++)
+                        for (int g = Fill; g < FroggerGame.timeCounter.Width; g++)
                         {
-                            data[j * Game1.timeCounter.Width + g] = new Color(20, 190, 0);
+                            data[j * FroggerGame.timeCounter.Width + g] = new Color(20, 190, 0);
                         }
                     }
                 }
-                Game1.timeCounter.SetData(data);
+                FroggerGame.timeCounter.SetData(data);
             }
 
          

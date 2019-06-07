@@ -49,7 +49,7 @@ namespace Frogger.GameObjects
             IsStick = false;
             IsDead = false;
             IsDrown = false;
-            Texture = Game1.textureManager.frogGreen;
+            Texture = FroggerGame.textureManager.frogGreen;
             StartPosition = position;
 
             Location = new Rectangle(
@@ -84,11 +84,11 @@ namespace Frogger.GameObjects
             }
             else if (IsDrown)
             {
-                theBatch.Draw(Game1.textureManager.frogDrown, new Rectangle(Location.X + Game1.textureManager.frogDrown.Width / 8, Location.Y + Game1.textureManager.frogDrown.Height / 2, Location.Width, Location.Height), new Rectangle(Game1.textureManager.frogDrown.Width / 4 * deadIdx, 0, Game1.textureManager.frogDrown.Width / 4, Game1.textureManager.frogDrown.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
+                theBatch.Draw(FroggerGame.textureManager.frogDrown, new Rectangle(Location.X + FroggerGame.textureManager.frogDrown.Width / 8, Location.Y + FroggerGame.textureManager.frogDrown.Height / 2, Location.Width, Location.Height), new Rectangle(FroggerGame.textureManager.frogDrown.Width / 4 * deadIdx, 0, FroggerGame.textureManager.frogDrown.Width / 4, FroggerGame.textureManager.frogDrown.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
             }
             else
             {
-                theBatch.Draw(Game1.textureManager.frogDead, new Rectangle(Location.X + Game1.textureManager.frogDead.Width / 8, Location.Y + Game1.textureManager.frogDead.Height / 2, Location.Width, Location.Height), new Rectangle(Game1.textureManager.frogDead.Width / 4 * deadIdx, 0, Game1.textureManager.frogDead.Width / 4, Game1.textureManager.frogDead.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
+                theBatch.Draw(FroggerGame.textureManager.frogDead, new Rectangle(Location.X + FroggerGame.textureManager.frogDead.Width / 8, Location.Y + FroggerGame.textureManager.frogDead.Height / 2, Location.Width, Location.Height), new Rectangle(FroggerGame.textureManager.frogDead.Width / 4 * deadIdx, 0, FroggerGame.textureManager.frogDead.Width / 4, FroggerGame.textureManager.frogDead.Height), Color.White, 0f, new Vector2(Texture.Width / 8, Texture.Height / 2), SpriteEffects.None, 1);
             }
 
         }
@@ -187,7 +187,7 @@ namespace Frogger.GameObjects
                     }
 
                     keyDelay = 150;
-                    Game1.audioManager.hop.Play();
+                    FroggerGame.audioManager.hop.Play();
                     IsMoving = true;
                 }
 
@@ -200,13 +200,13 @@ namespace Frogger.GameObjects
                         angle = (float)Math.PI * 1.5f;
 
                     }
-                    if (gesture.Delta.X > 0 && Location.X < Game1.WIDTH - (Texture.Width / 3))
+                    if (gesture.Delta.X > 0 && Location.X < FroggerGame.WIDTH - (Texture.Width / 3))
                     {
                         moveVector = Position + moveHorizontal;
                         angle = (float)Math.PI / 2;
                     }
                     keyDelay = 150;
-                    Game1.audioManager.hop.Play();
+                    FroggerGame.audioManager.hop.Play();
                     IsMoving = true;
                 } 
             }

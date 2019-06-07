@@ -21,7 +21,7 @@ namespace Frogger.GameObjects
 
         public Wall(Vector2 position)
         {
-            Texture = Game1.textureManager.wall;
+            Texture = FroggerGame.textureManager.wall;
             Location = position;
         }
 

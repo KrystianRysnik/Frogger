@@ -30,23 +30,23 @@ namespace Frogger.GameObjects
             switch (Row)
             {
                 case 13:
-                    Texture = Game1.textureManager.carFirst;
+                    Texture = FroggerGame.textureManager.carFirst;
                     Speed = new Vector2(-1.5f, 0);
                     break;
                 case 12:
-                    Texture = Game1.textureManager.carSecond;
+                    Texture = FroggerGame.textureManager.carSecond;
                     Speed = new Vector2(1.5f, 0);
                     break;
                 case 11:
-                    Texture = Game1.textureManager.carThird;
+                    Texture = FroggerGame.textureManager.carThird;
                     Speed = new Vector2(-1.5f, 0);
                     break;
                 case 10:
-                    Texture = Game1.textureManager.carFourth;
+                    Texture = FroggerGame.textureManager.carFourth;
                     Speed = new Vector2(1.4f, 0);
                     break;
                 case 9:
-                    Texture = Game1.textureManager.carFifth;
+                    Texture = FroggerGame.textureManager.carFifth;
                     Speed = new Vector2(-1.3f, 0);
                     break;
                 default:
@@ -58,13 +58,13 @@ namespace Frogger.GameObjects
 
         public void Update(GameTime theTime)
         {
-            if (Location.X >= RestartPosition && RestartPosition >= Game1.WIDTH)
+            if (Location.X >= RestartPosition && RestartPosition >= FroggerGame.WIDTH)
             {
                 Location = new Rectangle(-Texture.Width, Location.Y, Texture.Width, Texture.Height);
             }
             else if (Location.X <= RestartPosition && RestartPosition <= 0)
             {
-                Location = new Rectangle(Game1.WIDTH + Texture.Width, Location.Y, Texture.Width, Texture.Height);
+                Location = new Rectangle(FroggerGame.WIDTH + Texture.Width, Location.Y, Texture.Width, Texture.Height);
             }
             Location = new Rectangle(Location.X + (int)Speed.X, Location.Y, Texture.Width, Texture.Height);
         }   

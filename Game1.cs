@@ -11,7 +11,7 @@ namespace Frogger
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class FroggerGame : Game
     {
         public static TextureManager textureManager;
         public static AudioManager audioManager;
@@ -44,7 +44,7 @@ namespace Frogger
         public static Texture2D gameOverBackground;
         public static SpriteFont eightBitFont;
 
-        public Game1()
+        public FroggerGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

@@ -38,59 +38,59 @@ namespace Frogger.Display
         public GameScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
             hud = new HUD();
-            player = new Frog("green", new Vector2(8 * (Game1.textureManager.frogGreen.Width/6), 14 * 52));
-            rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
+            player = new Frog("green", new Vector2(8 * (FroggerGame.textureManager.frogGreen.Width/6), 14 * 52));
+            rewardForJump = player.Location.Y - FroggerGame.textureManager.frogGreen.Height;
 
             for (int i = 0; i < 5; i++)
             {
-                meta.Add(new Meta(new Vector2(23 + (Game1.textureManager.meta.Width/2 * i + 98 * i), 52+49)));
+                meta.Add(new Meta(new Vector2(23 + (FroggerGame.textureManager.meta.Width/2 * i + 98 * i), 52+49)));
             }
 
             for (int x = 0; x < 14; x++)
             {
-                walls.Add(new Wall(new Vector2(x * Game1.textureManager.wall.Width, 8 * 52)));
+                walls.Add(new Wall(new Vector2(x * FroggerGame.textureManager.wall.Width, 8 * 52)));
             }
 
             for (int x = 0; x < 14; x++)
             {
-                walls.Add(new Wall(new Vector2(x * Game1.textureManager.wall.Width, 14 * 52)));
+                walls.Add(new Wall(new Vector2(x * FroggerGame.textureManager.wall.Width, 14 * 52)));
             }
 
             turtlesInRowStageOne(7, 3, 52, 52, -52);
             turtlesInRowStageOne(4, 2, 78, 104, -52);
-            logsInRowStageOne(6, 3, 104, 104, Game1.WIDTH + 52*3);
-            logsInRowStageOne(3, 4, 52, 0, Game1.WIDTH + 52*4);
-            logsInRowStageOne(5, 6, 104, 104, Game1.WIDTH + 52 * 3);
+            logsInRowStageOne(6, 3, 104, 104, FroggerGame.WIDTH + 52*3);
+            logsInRowStageOne(3, 4, 52, 0, FroggerGame.WIDTH + 52*4);
+            logsInRowStageOne(5, 6, 104, 104, FroggerGame.WIDTH + 52 * 3);
 
-            carsInRowStageOne(9, 2, (int)(5.5 * 52), Game1.WIDTH / 2, -104);
-            carsInRowStageOne(10, 1, 4 * 52, -108, Game1.WIDTH);
-            carsInRowStageOne(11, 3, 4 * 52, Game1.WIDTH / 2 - 52, -78);
-            carsInRowStageOne(12, 2, 4 * 52, Game1.WIDTH / 2 - 52, Game1.WIDTH + 52);
-            carsInRowStageOne(13, 3, (int)(4.5 * 52), Game1.WIDTH / 2 - 52, -78);
+            carsInRowStageOne(9, 2, (int)(5.5 * 52), FroggerGame.WIDTH / 2, -104);
+            carsInRowStageOne(10, 1, 4 * 52, -108, FroggerGame.WIDTH);
+            carsInRowStageOne(11, 3, 4 * 52, FroggerGame.WIDTH / 2 - 52, -78);
+            carsInRowStageOne(12, 2, 4 * 52, FroggerGame.WIDTH / 2 - 52, FroggerGame.WIDTH + 52);
+            carsInRowStageOne(13, 3, (int)(4.5 * 52), FroggerGame.WIDTH / 2 - 52, -78);
         }
 
         public override void Update(GameTime theTime)
         {
             if (hud.isGameOver && hud.slidePosition.X == 0)
             {
-                Game1.scoreManager.SaveScore(hud.Score);
+                FroggerGame.scoreManager.SaveScore(hud.Score);
                 userScore = hud.Score;            
                 ScreenEvent.Invoke(this, new EventArgs());
                 return;
             }
 
-            if (Game1.audioManager.squashInstance.State != SoundState.Playing
-                && Game1.audioManager.plunkInstance.State != SoundState.Playing
-                && Game1.audioManager.themeInstance.State == SoundState.Paused)
+            if (FroggerGame.audioManager.squashInstance.State != SoundState.Playing
+                && FroggerGame.audioManager.plunkInstance.State != SoundState.Playing
+                && FroggerGame.audioManager.themeInstance.State == SoundState.Paused)
             {
-                if (isExtraSound == true && Game1.audioManager.extraInstance.State != SoundState.Playing)
+                if (isExtraSound == true && FroggerGame.audioManager.extraInstance.State != SoundState.Playing)
                 {
-                    Game1.audioManager.themeInstance.Resume();
+                    FroggerGame.audioManager.themeInstance.Resume();
                     isExtraSound = false;
                 }
                 else if (isExtraSound == false)
                 {
-                    Game1.audioManager.extraInstance.Play();
+                    FroggerGame.audioManager.extraInstance.Play();
                     isExtraSound = true;
                 }
             }
@@ -225,7 +225,7 @@ namespace Frogger.Display
 
             for (int i = 0; i < 5; i++)
             {
-                theBatch.Draw(Game1.textureManager.forest, new Vector2(i * Game1.textureManager.forest.Width, 52), Color.White);
+                theBatch.Draw(FroggerGame.textureManager.forest, new Vector2(i * FroggerGame.textureManager.forest.Width, 52), Color.White);
             }
           
             player.Draw(theBatch);
@@ -257,22 +257,22 @@ namespace Frogger.Display
                 player.IsDead = true;
                 hud.Life--;
                 hud.Time = 60f;
-                Game1.audioManager.themeInstance.Pause();
-                Game1.audioManager.plunkInstance.Play();
+                FroggerGame.audioManager.themeInstance.Pause();
+                FroggerGame.audioManager.plunkInstance.Play();
             }
             else if (isDead && !isDrown)
             {
                 player.IsDead = true;
                 hud.Life--;
                 hud.Time = 60f;
-                Game1.audioManager.themeInstance.Pause();
-                Game1.audioManager.squashInstance.Play();
+                FroggerGame.audioManager.themeInstance.Pause();
+                FroggerGame.audioManager.squashInstance.Play();
             }
             else
             { 
                player.RestartLocation();
             }
-            rewardForJump = player.Location.Y - Game1.textureManager.frogGreen.Height;
+            rewardForJump = player.Location.Y - FroggerGame.textureManager.frogGreen.Height;
         }
 
         private void CheckRewardForJump()
@@ -280,7 +280,7 @@ namespace Frogger.Display
             if (rewardForJump >= player.Location.Y)
             {
                 hud.Score += 10;
-                rewardForJump -= Game1.textureManager.frogGreen.Height;
+                rewardForJump -= FroggerGame.textureManager.frogGreen.Height;
             }
         }
 
