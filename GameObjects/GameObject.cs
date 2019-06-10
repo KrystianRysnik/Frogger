@@ -14,13 +14,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
 {
-    class Wall : GameObject
+    class GameObject
     {
 
-        public Wall(Vector2 position)
+        public Texture2D Texture { set; get; }
+        public Vector2 Position { set; get; }
+        public Vector2 Speed { set; get; }
+        public Rectangle Location { set; get; }
+
+
+        public virtual void Draw(SpriteBatch theBatch)
         {
-            Texture = FroggerGame.textureManager.wall;
-            Location = new Rectangle((int)position.X, (int)position.Y, Texture.Width, Texture.Height);
-        }
+            theBatch.Draw(Texture, Location, Color.White);
+        }        
     }
 }

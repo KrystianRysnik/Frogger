@@ -14,10 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
 {
-    class Meta
+    class Meta : GameObject
     {
-        public Rectangle Location { set; get; }
-        Texture2D Texture { set; get; }
         public bool IsShow { set; get; }
 
         public Meta(Vector2 _position)
@@ -27,12 +25,7 @@ namespace Frogger.GameObjects
             IsShow = false;
         }
 
-        public void Update(GameTime theTime)
-        {
-
-        }
-
-        public void Draw(SpriteBatch theBatch)
+        public override void Draw(SpriteBatch theBatch)
         {
             if (IsShow)
             {

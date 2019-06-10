@@ -64,11 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity1.cs" />
-    <Compile Include="Display\HomeScreen.cs" />
+    <Compile Include="Display\MainScreen.cs" />
     <Compile Include="Display\ScoreScreen.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Car.cs" />
     <Compile Include="GameObjects\Frog.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\HUD.cs" />
     <Compile Include="GameObjects\Log.cs" />
     <Compile Include="GameObjects\Meta.cs" />

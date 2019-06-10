@@ -16,9 +16,9 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Frogger.Display
 {
-    class HomeScreen : Screen
+    class MainScreen : Screen
     {
-        public HomeScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
+        public MainScreen(ContentManager theContent, EventHandler theScreenEvent) : base(theScreenEvent)
         {
             FroggerGame.audioManager.coin.Play();
         }

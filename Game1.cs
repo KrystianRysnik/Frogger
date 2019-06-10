@@ -17,7 +17,7 @@ namespace Frogger
         public static AudioManager audioManager;
         public static ScoreManager scoreManager;
 
-        HomeScreen m_HomeScreen;
+        MainScreen m_MainScreen;
         GameScreen m_GameScreen;
         ScoreScreen m_ScoreScreen;
         Screen m_CurrentScreen;
@@ -126,10 +126,10 @@ namespace Frogger
 
             eightBitFont = Content.Load<SpriteFont>("Font/8bit");
 
-            m_HomeScreen = new HomeScreen(this.Content, new EventHandler(HomeScreenEvent));
+            m_MainScreen = new MainScreen(this.Content, new EventHandler(MainScreenEvent));
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));
             m_ScoreScreen = new ScoreScreen(this.Content, new EventHandler(ScoreScreenEvent));
-            m_CurrentScreen = m_HomeScreen;
+            m_CurrentScreen = m_MainScreen;
 
         }
 
@@ -191,7 +191,7 @@ namespace Frogger
             base.Dispose(disposing);
         }
 
-        public void HomeScreenEvent(object obj, EventArgs e)
+        public void MainScreenEvent(object obj, EventArgs e)
         {
             m_GameScreen = new GameScreen(this.Content, new EventHandler(GameScreenEvent));        
             m_CurrentScreen = m_GameScreen;
@@ -208,7 +208,7 @@ namespace Frogger
 
         public void ScoreScreenEvent(object obj, EventArgs e)
         {
-            m_CurrentScreen = m_HomeScreen;
+            m_CurrentScreen = m_MainScreen;
 
             // Play "insert coin" sound effect
             audioManager.coin.Play();

@@ -14,13 +14,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
 {
-    class Car
+    class Car : GameObject
     {
         int Row { set; get; }
-        Vector2 Speed { set; get; }
-        Texture2D Texture { set; get; }
-        public Rectangle Location { set; get; }
-
         int RestartPosition { set; get; }
 
         public Car(int row, Vector2 position, int restartPosition)
@@ -68,10 +64,5 @@ namespace Frogger.GameObjects
             }
             Location = new Rectangle(Location.X + (int)Speed.X, Location.Y, Texture.Width, Texture.Height);
         }   
-
-        public void Draw(SpriteBatch theBatch)
-        {
-            theBatch.Draw(Texture, Location, Color.White);
-        }
     }
 }

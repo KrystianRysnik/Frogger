@@ -56,17 +56,17 @@ namespace Frogger.Display
                 walls.Add(new Wall(new Vector2(x * FroggerGame.textureManager.wall.Width, 14 * 52)));
             }
 
-            turtlesInRowStageOne(7, 3, 52, 52, -52);
-            turtlesInRowStageOne(4, 2, 78, 104, -52);
-            logsInRowStageOne(6, 3, 104, 104, FroggerGame.WIDTH + 52*3);
-            logsInRowStageOne(3, 4, 52, 0, FroggerGame.WIDTH + 52*4);
-            logsInRowStageOne(5, 6, 104, 104, FroggerGame.WIDTH + 52 * 3);
+            SpawnTurtles(7, 3, 52, 52, -52);
+            SpawnTurtles(4, 2, 78, 104, -52);
+            SpawnLogs(6, 3, 104, 104, FroggerGame.WIDTH + 52*3);
+            SpawnLogs(3, 4, 52, 0, FroggerGame.WIDTH + 52*4);
+            SpawnLogs(5, 6, 104, 104, FroggerGame.WIDTH + 52 * 3);
 
-            carsInRowStageOne(9, 2, (int)(5.5 * 52), FroggerGame.WIDTH / 2, -104);
-            carsInRowStageOne(10, 1, 4 * 52, -108, FroggerGame.WIDTH);
-            carsInRowStageOne(11, 3, 4 * 52, FroggerGame.WIDTH / 2 - 52, -78);
-            carsInRowStageOne(12, 2, 4 * 52, FroggerGame.WIDTH / 2 - 52, FroggerGame.WIDTH + 52);
-            carsInRowStageOne(13, 3, (int)(4.5 * 52), FroggerGame.WIDTH / 2 - 52, -78);
+            SpawnCars(9, 2, (int)(5.5 * 52), FroggerGame.WIDTH / 2, -104);
+            SpawnCars(10, 1, 4 * 52, -108, FroggerGame.WIDTH);
+            SpawnCars(11, 3, 4 * 52, FroggerGame.WIDTH / 2 - 52, -78);
+            SpawnCars(12, 2, 4 * 52, FroggerGame.WIDTH / 2 - 52, FroggerGame.WIDTH + 52);
+            SpawnCars(13, 3, (int)(4.5 * 52), FroggerGame.WIDTH / 2 - 52, -78);
         }
 
         public override void Update(GameTime theTime)
@@ -284,7 +284,7 @@ namespace Frogger.Display
             }
         }
 
-        private void logsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
+        private void SpawnLogs(int row, int length, int spaceBetween, int startFrom, int restart)
         {
             if (length == 6)
             {
@@ -312,7 +312,7 @@ namespace Frogger.Display
             }
         }
 
-        private void carsInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
+        private void SpawnCars(int row, int length, int spaceBetween, int startFrom, int restart)
         {
             for (int i = 0; i < length; i++)
             {
@@ -321,7 +321,7 @@ namespace Frogger.Display
             }
          }       
         
-        private void turtlesInRowStageOne(int row, int length, int spaceBetween, int startFrom, int restart)
+        private void SpawnTurtles(int row, int length, int spaceBetween, int startFrom, int restart)
         {
             Turtle[] turtles = new Turtle[length];
             for (int i = 0; i < length; i++)

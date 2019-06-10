@@ -14,12 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
 {
-    class Turtle
+    class Turtle : GameObject
     {
-        public Texture2D Texture { set; get; }
-        public Rectangle Location { set; get; }
-        public Vector2 Position { set; get; }
-
         // normal, diver
         string Name { set; get; }
         int Length { set; get; }
@@ -69,7 +65,7 @@ namespace Frogger.GameObjects
             }
         }
 
-        public void Draw(SpriteBatch theBatch)
+        public override void Draw(SpriteBatch theBatch)
         {
             if (Name == "normal")
             {

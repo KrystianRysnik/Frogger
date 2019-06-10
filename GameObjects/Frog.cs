@@ -16,17 +16,10 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Frogger.GameObjects
 {
-    class Frog
+    class Frog : GameObject
     {
         Vector2 StartPosition { set; get; }
-        public Vector2 Position { set; get; }
-        public Vector2 Move { set; get; }
-        Texture2D Texture { set; get; }
-    
-        public Rectangle Location { set; get; }
-
-        KeyboardState keyboardState;
-        KeyboardState previousState;
+        public Vector2 Move { set; get; }    
 
         Vector2 moveHorizontal;
         Vector2 moveVertical;
@@ -70,13 +63,12 @@ namespace Frogger.GameObjects
             HandleTime(theTime);
             if (!IsDead)
             {
-                //KeyboardControl();
                 TouchControl();
                 UpdateLocation(theTime);
             }
         }
 
-        public void Draw(SpriteBatch theBatch)
+        public override void Draw(SpriteBatch theBatch)
         {
             if (!IsDead)
             {
@@ -124,46 +116,7 @@ namespace Frogger.GameObjects
                 deadIdx++;
             }
         }
-
-        private void KeyboardControl()
-        {
-            keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Up) & !previousState.IsKeyDown(Keys.Up) && keyDelay <= 0)
-            {
-                moveVector = -moveVertical;
-                angle = 0f;
-                keyDelay = 150;
-                IsMoving = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Down) & !previousState.IsKeyDown(Keys.Down) && keyDelay <= 0)
-            {
-                moveVector = moveVertical;
-                angle = (float)Math.PI;
-                keyDelay = 150;
-                IsMoving = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Left) & !previousState.IsKeyDown(Keys.Left) && keyDelay <= 0)
-            {
-                moveVector = -moveHorizontal;
-                angle = (float)Math.PI * 1.5f;
-                keyDelay = 150;
-                IsMoving = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Right) & !previousState.IsKeyDown(Keys.Right) && keyDelay <= 0)
-            {
-                moveVector = moveHorizontal;
-                angle = (float)Math.PI / 2;
-                keyDelay = 150;
-                IsMoving = true;
-            }
-
-            previousState = Keyboard.GetState();
-        }
-
+    
         public void TouchControl()
         {
             var gesture = default(GestureSample);

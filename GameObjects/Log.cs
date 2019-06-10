@@ -14,12 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Frogger.GameObjects
 {
-    class Log
+    class Log : GameObject
     {
-        public Texture2D Texture { set; get; }
-        public Rectangle Location { set; get; }
-        public Vector2 Position { set; get; }
-
         int Length { set; get; }
         int RestartPosition { set; get; }
 
@@ -53,11 +49,6 @@ namespace Frogger.GameObjects
                 Location = new Rectangle(-Texture.Width, Location.Y, Texture.Width, Texture.Height);
             }
             Location = new Rectangle(Location.X + (int)Position.X, Location.Y, Texture.Width, Texture.Height);
-        }
-
-        public void Draw(SpriteBatch theBatch)
-        {
-            theBatch.Draw(Texture, Location, Color.White);
         }
     }
 }
